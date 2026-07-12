@@ -414,6 +414,7 @@
 
 #sidebar:not(.is-expanded) .sidebar-user-main {
   cursor: pointer;
+  justify-content: center;
 }
 
 /* ── Settings button ── */
