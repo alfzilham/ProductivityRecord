@@ -172,7 +172,7 @@ const Sidebar = {
         </div>
 
         <div class="sidebar-search-wrapper">
-          <i data-lucide="search" class="sidebar-search-icon" width="24" height="24"></i>
+          <i data-lucide="search" class="sidebar-search-icon" width="32" height="32"></i>
           <input type="text" class="sidebar-search-input" id="sidebar-search-input" placeholder="Cari..." value="${this.escHtml(this.searchQuery)}" autocomplete="off">
           <div id="sidebar-search-overlay"></div>
         </div>
