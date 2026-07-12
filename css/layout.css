@@ -276,27 +276,8 @@
   background-color: rgba(192, 192, 200, 0.1);
 }
 
-.sidebar-item.active::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: auto;
-  bottom: 4px;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 3px;
-  background-color: var(--accent);
-  border-radius: 2px;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
 .is-expanded .sidebar-item {
   padding-left: var(--spacing-md);
-}
-
-.is-expanded .sidebar-item.active::before {
-  opacity: 1;
 }
 
 .sidebar-item-icon {
