@@ -269,6 +269,10 @@ const Sidebar = {
 
     this.updateAppGrid();
     this.bindSidebarEvents();
+
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
   },
 
   /* ── Events ── */
