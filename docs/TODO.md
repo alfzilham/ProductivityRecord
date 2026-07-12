@@ -4,41 +4,43 @@ Daftar task teknis dan known issues untuk ProductivityRecord. Diupdate setiap fa
 
 ## Setup Awal
 
-- [ ] Setup struktur folder dasar (`css/`, `js/`, `assets/`, `index.html`)
-- [ ] Buat `js/storage.js` (wrapper `localStorage`: `get`, `set`, `remove`)
-- [ ] Setup base styling (`reset.css`, `variable.css` — warna & font sesuai `DESIGN.md`)
-- [ ] Integrasikan Lucide icon library
-- [ ] Integrasikan AOS (Animate On Scroll), pastikan diterapkan per child item
-- [ ] Buat layout dasar: sidebar navigasi + area konten utama
-- [ ] Setup GitHub Pages deployment
+- [x] Setup struktur folder dasar (`css/`, `js/`, `assets/`, `index.html`)
+- [x] Buat `js/storage.js` (wrapper `localStorage`: `get`, `set`, `remove`)
+- [x] Setup base styling (`reset.css`, `variable.css` — warna & font sesuai `DESIGN.md`)
+- [x] Integrasikan Lucide icon library
+- [x] Integrasikan AOS (Animate On Scroll), pastikan diterapkan per child item
+- [x] Buat layout dasar: sidebar navigasi + area konten utama
+- [x] Setup GitHub Pages deployment
 
 ## Fase 1 — Finance
 
-- [ ] Spec struktur data Finance di `SPEC.md`
-- [ ] Form catat pemasukan/pengeluaran harian
-- [ ] Kalkulasi rekap per hari
-- [ ] Kalkulasi rekap per minggu
-- [ ] Kalkulasi rekap per bulan
-- [ ] Tampilan ringkasan saldo berjalan
-- [ ] Card UI sesuai `DESIGN.md`
+- [x] Spec struktur data Finance di `SPEC.md`
+- [x] Form catat pemasukan/pengeluaran harian
+- [x] Kalkulasi rekap per hari
+- [x] Kalkulasi rekap per minggu
+- [x] Kalkulasi rekap per bulan
+- [x] Tampilan ringkasan saldo berjalan
+- [x] Card UI sesuai `DESIGN.md`
 
 ## Fase 2 — To-Do List
 
-- [ ] Spec struktur data To-Do di `SPEC.md`
-- [ ] CRUD task (judul, deskripsi, deadline)
-- [ ] Prioritas task
-- [ ] Kategori/tag task
-- [ ] Sub-task
-- [ ] Recurring task
-- [ ] Reminder in-app
-- [ ] Tampilan kalender
+- [x] Spec struktur data To-Do di `SPEC.md`
+- [x] CRUD task (judul, deskripsi, deadline)
+- [x] Prioritas task
+- [x] Kategori/tag task
+- [x] Sub-task
+- [x] Recurring task
+- [x] Reminder in-app
+- [x] Tampilan kalender
 
 ## Fase 3 — Habit Tracker
 
-- [ ] Spec struktur data Habit di `SPEC.md`
+- [x] Spec struktur data Habit di `SPEC.md`
 - [ ] CRUD daftar habit
-- [ ] Check-in harian
+- [ ] Check-in harian (binary + kuantitatif)
 - [ ] Perhitungan streak
+- [ ] Frekuensi custom (harian/mingguan/hari tertentu)
+- [ ] Riwayat kalender mini per habit
 
 ## Fase 4 — Journal
 

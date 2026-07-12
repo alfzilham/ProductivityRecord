@@ -204,7 +204,64 @@ User bisa membuat kategori custom dengan nama dan warna. Tidak ada fixed/default
 - **List View** (default): Group task dalam 4 section — Hari Ini, Mendatang, Terlewat, Selesai
 - **Kalender View**: Grid kalender mini (seperti kalender bulanan), menampilkan jumlah task per tanggal
 
-### 6.3 Habit Tracker — _(belum dispesifikasikan, Fase 3)_
+### 6.3 Habit Tracker
+
+**Key localStorage**: `remindme:habit`
+
+#### 6.3.1 Struktur Data
+
+```javascript
+{
+  habits: [
+    {
+      id: "habit_xxx",
+      name: "Minum Air",
+      description: "Minum 8 gelas air putih",
+      frequency: "daily",           // "daily" | "weekly" | "custom"
+      customDays: null,              // ["mon","wed","fri"] jika frequency="custom"
+      weeklyTarget: null,            // 3 jika frequency="weekly" (target 3x seminggu)
+      hasTarget: false,              // true = kuantitatif
+      targetValue: null,             // misal 8 untuk "8 gelas"
+      targetUnit: null,              // misal "gelas"
+      sortOrder: 0,
+      createdAt: "...",
+    }
+  ],
+  entries: [
+    {
+      id: "entry_xxx",
+      habitId: "habit_xxx",
+      date: "2026-07-12",           // YYYY-MM-DD
+      value: null,                   // angka untuk kuantitatif; null untuk binary
+      completed: true,               // binary flag
+      createdAt: "...",
+    }
+  ]
+}
+```
+
+#### 6.3.2 Frekuensi
+
+| Value | Deskripsi |
+|---|---|
+| `daily` | Setiap hari — check-in required setiap hari |
+| `weekly` | X kali seminggu (ditentukan `weeklyTarget`) — tidak terikat hari spesifik |
+| `custom` | Hari-hari tertentu dalam seminggu (`customDays`: `["mon","wed","fri"]`) |
+
+#### 6.3.3 Streak
+
+- **Current streak**: jumlah hari berturut-turut (consecutive days) habit di-check-in sampai hari ini
+- **Longest streak**: streak terpanjang yang pernah dicapai
+- Streak dihitung dari data `entries`:
+  - Urutkan entries descending by date
+  - Hitung consecutive days dari hari ini ke belakang (atau dari entry terakhir)
+  - Jika ada gap (hari terlewat), streak putus
+
+#### 6.3.4 Kalender Mini
+
+- Setiap habit menampilkan 30 hari terakhir dalam bentuk grid kalender mini
+- Hari yang ter-check-in diwarnai (hijau), yang terlewat abu-abu/kosong
+- Hari ini ditandai khusus
 
 ### 6.4 Journal — _(belum dispesifikasikan, Fase 4)_
 
