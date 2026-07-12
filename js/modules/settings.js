@@ -50,7 +50,7 @@ const SETTINGS_TABS = [
   { id: 'profile', label: 'Profil', icon: 'user' },
   { id: 'appearance', label: 'Appearance', icon: 'palette' },
   { id: 'sidebar', label: 'Sidebar', icon: 'sidebar' },
-  { id: 'data', label: 'Data', icon: 'database' },
+  { id: 'privacy', label: 'Privacy', icon: 'shield' },
   { id: 'about', label: 'About', icon: 'info' },
 ];
 
@@ -174,7 +174,7 @@ const Settings = {
       case 'profile': return this.renderProfile();
       case 'appearance': return this.renderAppearance();
       case 'sidebar': return this.renderSidebar();
-      case 'data': return this.renderData();
+      case 'privacy': return this.renderPrivacy();
       case 'about': return this.renderAbout();
       default: return this.renderProfile();
     }
@@ -269,10 +269,32 @@ const Settings = {
     `;
   },
 
-  renderData() {
+  renderPrivacy() {
     return `
       <div class="settings-section">
-        <h3 class="settings-section-title">Data</h3>
+        <h3 class="settings-section-title">Privacy</h3>
+
+        <h4 class="settings-subsection-title">
+          <i data-lucide="lock" width="14" height="14" style="margin-right:4px"></i>Bagaimana data Anda dilindungi
+        </h4>
+        <ul class="settings-privacy-list">
+          <li>Semua data Anda disimpan di localStorage browser milik Anda sendiri — tidak pernah dikirim ke server mana pun</li>
+          <li>Aplikasi ini tidak memiliki backend, database eksternal, atau sistem autentikasi</li>
+          <li>Anda bisa menghapus data kapan saja melalui Clear Site Data di pengaturan browser</li>
+          <li>Fitur Export/Import tersedia untuk backup manual data Anda</li>
+        </ul>
+
+        <h4 class="settings-subsection-title">
+          <i data-lucide="eye-off" width="14" height="14" style="margin-right:4px"></i>Bagaimana data Anda digunakan
+        </h4>
+        <ul class="settings-privacy-list">
+          <li>ProductivityRecord tidak mengumpulkan, menjual, atau membagikan data Anda ke pihak ketiga</li>
+          <li>Tidak ada pelatihan AI, tidak ada analitik, tidak ada email marketing</li>
+          <li>Aplikasi berjalan 100% secara lokal di browser Anda</li>
+          <li>Anda memiliki kendali penuh atas data Anda setiap saat</li>
+        </ul>
+
+        <div class="settings-section-divider"></div>
 
         <h4 class="settings-subsection-title">Export</h4>
         <p class="form-hint">Pilih modul yang ingin di-export:</p>

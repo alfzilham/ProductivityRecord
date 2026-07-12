@@ -1626,6 +1626,17 @@
   color: var(--text-secondary);
   margin-bottom: var(--spacing-sm);
   margin-top: var(--spacing-md);
+  display: flex;
+  align-items: center;
+}
+
+.settings-privacy-list {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  list-style: disc;
 }
 
 .form-hint {

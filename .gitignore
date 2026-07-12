@@ -3,3 +3,5 @@ logs/
 .agent/
 .skills/
 ruvector.db
+
+assets/references.md
