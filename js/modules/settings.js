@@ -396,6 +396,8 @@ const Settings = {
 
         <div class="settings-section-divider"></div>
 
+        <h3 class="settings-section-title">Data</h3>
+
         <h4 class="settings-subsection-title">Export</h4>
         <p class="form-hint">Pilih modul yang ingin di-export:</p>
         <div class="settings-checklist">
