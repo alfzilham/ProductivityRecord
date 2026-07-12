@@ -1715,6 +1715,78 @@
   cursor: pointer;
 }
 
+/* ── Notification Settings ── */
+
+.settings-notif-group {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-notif-group:last-of-type {
+  border-bottom: none;
+}
+
+.settings-notif-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  margin-bottom: var(--spacing-sm);
+}
+
+.settings-notif-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.settings-notif-label {
+  font-size: var(--text-body);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+}
+
+.settings-notif-sub {
+  padding-left: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.settings-notif-sub.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.settings-notif-select {
+  max-width: 200px;
+  margin-top: var(--spacing-xs);
+}
+
+.settings-notif-time {
+  max-width: 140px;
+  margin-top: var(--spacing-xs);
+}
+
+.settings-notif-check-event {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--text-caption);
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-top: var(--spacing-xs);
+}
+
+.settings-notif-check-event input {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
 /* ── Settings Modal ── */
 
 .settings-modal {

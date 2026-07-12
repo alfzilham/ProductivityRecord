@@ -38,6 +38,17 @@ const LOCALE_OPTIONS = [
   { code: 'fil-PH', label: 'Filipino' },
 ];
 
+const SETTINGS_NOTIFICATION_KEY = 'remindme:notification';
+
+const DEFAULT_NOTIFICATION = {
+  taskDeadlineEnabled: true,
+  taskDeadlineHours: 24,
+  habitReminderEnabled: false,
+  habitReminderTime: '20:00',
+  browserNotifEnabled: false,
+  browserNotifEvents: ['task_deadline'],
+};
+
 const ALL_MODULES = [
   { key: 'remindme:finance', label: 'Finance' },
   { key: 'remindme:todo', label: 'To-Do List' },
@@ -49,7 +60,7 @@ const ALL_MODULES = [
 const SETTINGS_TABS = [
   { id: 'profile', label: 'Profil', icon: 'user' },
   { id: 'appearance', label: 'Appearance', icon: 'palette' },
-  { id: 'sidebar', label: 'Sidebar', icon: 'sidebar' },
+  { id: 'notification', label: 'Notification', icon: 'bell' },
   { id: 'privacy', label: 'Privacy', icon: 'shield' },
   { id: 'about', label: 'About', icon: 'info' },
 ];
@@ -59,10 +70,16 @@ const Settings = {
   activeTab: 'profile',
   profile: null,
   appearance: null,
+  notification: null,
 
   loadData() {
     this.profile = Storage.get(SETTINGS_PROFILE_KEY) || { ...DEFAULT_PROFILE };
     this.appearance = Storage.get(SETTINGS_APPEARANCE_KEY) || { ...DEFAULT_APPEARANCE };
+    this.notification = Storage.get(SETTINGS_NOTIFICATION_KEY) || { ...DEFAULT_NOTIFICATION };
+  },
+
+  saveNotification() {
+    Storage.set(SETTINGS_NOTIFICATION_KEY, this.notification);
   },
 
   saveProfile() {
@@ -173,7 +190,7 @@ const Settings = {
     switch (this.activeTab) {
       case 'profile': return this.renderProfile();
       case 'appearance': return this.renderAppearance();
-      case 'sidebar': return this.renderSidebar();
+      case 'notification': return this.renderNotification();
       case 'privacy': return this.renderPrivacy();
       case 'about': return this.renderAbout();
       default: return this.renderProfile();
@@ -250,21 +267,61 @@ const Settings = {
     `;
   },
 
-  renderSidebar() {
-    const sidebarState = Storage.get('remindme:sidebar');
-    const expanded = sidebarState ? sidebarState.expanded : true;
+  renderNotification() {
+    const n = this.notification;
     return `
       <div class="settings-section">
-        <h3 class="settings-section-title">Sidebar</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Default state saat buka halaman</label>
-            <div class="settings-toggle-row">
-              <button class="btn ${expanded ? 'btn-primary' : 'btn-secondary'} btn-sm sidebar-default-btn" data-state="expanded">Expand</button>
-              <button class="btn ${!expanded ? 'btn-primary' : 'btn-secondary'} btn-sm sidebar-default-btn" data-state="collapsed">Collapse</button>
-            </div>
+        <h3 class="settings-section-title">Notification</h3>
+
+        <div class="settings-notif-group">
+          <label class="settings-notif-toggle">
+            <input type="checkbox" class="settings-notif-checkbox" data-key="taskDeadlineEnabled" ${n.taskDeadlineEnabled ? 'checked' : ''}>
+            <span class="settings-notif-label">Pengingat deadline task</span>
+          </label>
+          <div class="settings-notif-sub ${n.taskDeadlineEnabled ? '' : 'disabled'}">
+            <span class="form-hint">Tampilkan peringatan</span>
+            <select class="input-field settings-notif-select" data-key="taskDeadlineHours" ${n.taskDeadlineEnabled ? '' : 'disabled'}>
+              <option value="24" ${n.taskDeadlineHours === 24 ? 'selected' : ''}>24 jam sebelumnya</option>
+              <option value="12" ${n.taskDeadlineHours === 12 ? 'selected' : ''}>12 jam sebelumnya</option>
+              <option value="6" ${n.taskDeadlineHours === 6 ? 'selected' : ''}>6 jam sebelumnya</option>
+              <option value="1" ${n.taskDeadlineHours === 1 ? 'selected' : ''}>1 jam sebelumnya</option>
+            </select>
           </div>
         </div>
+
+        <div class="settings-notif-group">
+          <label class="settings-notif-toggle">
+            <input type="checkbox" class="settings-notif-checkbox" data-key="habitReminderEnabled" ${n.habitReminderEnabled ? 'checked' : ''}>
+            <span class="settings-notif-label">Pengingat check-in habit</span>
+          </label>
+          <div class="settings-notif-sub ${n.habitReminderEnabled ? '' : 'disabled'}">
+            <span class="form-hint">Waktu pengingat</span>
+            <input type="time" class="input-field settings-notif-time" data-key="habitReminderTime" value="${n.habitReminderTime}" ${n.habitReminderEnabled ? '' : 'disabled'}>
+          </div>
+        </div>
+
+        <div class="settings-notif-group">
+          <label class="settings-notif-toggle">
+            <input type="checkbox" class="settings-notif-checkbox" data-key="browserNotifEnabled" ${n.browserNotifEnabled ? 'checked' : ''}>
+            <span class="settings-notif-label">Notifikasi browser (system)</span>
+          </label>
+          <div class="settings-notif-sub ${n.browserNotifEnabled ? '' : 'disabled'}">
+            <span class="form-hint">Event notifikasi</span>
+            <label class="settings-notif-check-event">
+              <input type="checkbox" class="settings-notif-event-cb" value="task_deadline" ${n.browserNotifEvents.includes('task_deadline') ? 'checked' : ''} ${n.browserNotifEnabled ? '' : 'disabled'}>
+              Deadline task
+            </label>
+            <label class="settings-notif-check-event">
+              <input type="checkbox" class="settings-notif-event-cb" value="habit_reminder" ${n.browserNotifEvents.includes('habit_reminder') ? 'checked' : ''} ${n.browserNotifEnabled ? '' : 'disabled'}>
+              Habit reminder
+            </label>
+            <button class="btn btn-secondary btn-sm" id="test-notif-btn" style="margin-top:var(--spacing-sm)" ${n.browserNotifEnabled ? '' : 'disabled'}>
+              <i data-lucide="volume-2" width="14" height="14"></i> Test Notifikasi
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-sm" id="save-notification-btn">Simpan Pengaturan</button>
       </div>
     `;
   },
@@ -438,6 +495,25 @@ const Settings = {
         return;
       }
 
+      if (e.target.closest('#save-notification-btn')) {
+        this.handleSaveNotification();
+        return;
+      }
+
+      if (e.target.closest('#test-notif-btn')) {
+        this.handleTestNotification();
+        return;
+      }
+
+      if (e.target.classList.contains('settings-notif-checkbox')) {
+        const key = e.target.dataset.key;
+        const sub = e.target.closest('.settings-notif-group').querySelector('.settings-notif-sub');
+        const inputs = sub.querySelectorAll('select, input, button');
+        inputs.forEach(inp => inp.disabled = !e.target.checked);
+        sub.classList.toggle('disabled', !e.target.checked);
+        return;
+      }
+
       if (e.target.classList.contains('sidebar-default-btn')) {
         document.querySelectorAll('.sidebar-default-btn').forEach(b => {
           b.className = `btn btn-secondary btn-sm sidebar-default-btn`;
@@ -504,6 +580,55 @@ const Settings = {
       body: '<p>Pengaturan tampilan berhasil diperbarui.</p>',
       buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
     });
+  },
+
+  handleSaveNotification() {
+    const n = this.notification;
+    n.taskDeadlineEnabled = document.querySelector('.settings-notif-checkbox[data-key="taskDeadlineEnabled"]')?.checked || false;
+    n.habitReminderEnabled = document.querySelector('.settings-notif-checkbox[data-key="habitReminderEnabled"]')?.checked || false;
+    n.browserNotifEnabled = document.querySelector('.settings-notif-checkbox[data-key="browserNotifEnabled"]')?.checked || false;
+    n.taskDeadlineHours = parseInt(document.querySelector('.settings-notif-select[data-key="taskDeadlineHours"]')?.value) || 24;
+    n.habitReminderTime = document.querySelector('.settings-notif-time[data-key="habitReminderTime"]')?.value || '20:00';
+    const events = [];
+    document.querySelectorAll('.settings-notif-event-cb:checked').forEach(cb => events.push(cb.value));
+    n.browserNotifEvents = events;
+    this.saveNotification();
+    this.showModal({
+      title: 'Tersimpan',
+      body: '<p>Pengaturan notifikasi berhasil diperbarui.</p>',
+      buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
+    });
+  },
+
+  handleTestNotification() {
+    if (!('Notification' in window)) {
+      this.showModal({
+        title: 'Tidak Didukung',
+        body: '<p>Browser Anda tidak mendukung notifikasi sistem.</p>',
+        buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
+      });
+      return;
+    }
+    if (Notification.permission === 'granted') {
+      new Notification('ProductivityRecord', { body: 'Notifikasi berfungsi dengan baik!' });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then(perm => {
+        if (perm === 'granted') {
+          new Notification('ProductivityRecord', { body: 'Notifikasi berhasil diaktifkan!' });
+          this.showModal({
+            title: 'Berhasil',
+            body: '<p>Notifikasi browser telah diaktifkan.</p>',
+            buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
+          });
+        }
+      });
+    } else {
+      this.showModal({
+        title: 'Diblokir',
+        body: '<p>Notifikasi telah diblokir oleh browser. Ubah di pengaturan situs browser Anda.</p>',
+        buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
+      });
+    }
   },
 
   handleExport() {
