@@ -36,11 +36,18 @@ Daftar task teknis dan known issues untuk ProductivityRecord. Diupdate setiap fa
 ## Fase 3 — Habit Tracker
 
 - [x] Spec struktur data Habit di `SPEC.md`
-- [ ] CRUD daftar habit
-- [ ] Check-in harian (binary + kuantitatif)
-- [ ] Perhitungan streak
-- [ ] Frekuensi custom (harian/mingguan/hari tertentu)
-- [ ] Riwayat kalender mini per habit
+- [x] CRUD daftar habit
+- [x] Check-in harian (binary + kuantitatif)
+- [x] Perhitungan streak
+- [x] Frekuensi custom (harian/mingguan/hari tertentu)
+- [x] Riwayat kalender mini per habit
+
+## Fase 4 — Journal
+
+- [x] Spec struktur data Journal di `SPEC.md`
+- [ ] CRUD entri jurnal (judul, isi, mood, refleksi)
+- [ ] Mood tag (fixed + custom)
+- [ ] Riwayat kronologis + search
 
 ## Fase 4 — Journal
 

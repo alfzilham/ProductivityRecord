@@ -263,7 +263,62 @@ User bisa membuat kategori custom dengan nama dan warna. Tidak ada fixed/default
 - Hari yang ter-check-in diwarnai (hijau), yang terlewat abu-abu/kosong
 - Hari ini ditandai khusus
 
-### 6.4 Journal — _(belum dispesifikasikan, Fase 4)_
+### 6.4 Journal
+
+**Key localStorage**: `remindme:journal`
+
+#### 6.4.1 Struktur Data
+
+```javascript
+{
+  defaultMoods: [
+    { id: "mood_happy",  label: "Baik",     icon: "smile" },
+    { id: "mood_meh",    label: "Biasa",    icon: "meh" },
+    { id: "mood_sad",    label: "Sedih",    icon: "frown" },
+    { id: "mood_angry",  label: "Marah",    icon: "angry" },
+    { id: "mood_tired",  label: "Lelah",    icon: "sleep" },
+    { id: "mood_excited",label: "Semangat", icon: "zap" },
+    { id: "mood_grateful",label: "Bersyukur",icon: "heart" },
+  ],
+  customMoods: [
+    { id: "mood_xxx", label: "Produktif", icon: "target" }
+  ],
+  entries: [
+    {
+      id: "entry_xxx",
+      date: "2026-07-12",                // YYYY-MM-DD
+      title: "Hari yang produktif",
+      content: "Hari ini aku menyelesaikan...",
+      moodId: "mood_happy",               // null jika tanpa mood
+      reflection: "Hal yang disyukuri...", // opsional
+      createdAt: "2026-07-12T22:00:00.000Z",
+      updatedAt: null,
+    }
+  ]
+}
+```
+
+#### 6.4.2 Mood
+
+Default moods (7 tetap, tidak bisa dihapus):
+| ID | Label | Icon Lucide |
+|---|---|---|
+| mood_happy | Baik | smile |
+| mood_meh | Biasa | meh |
+| mood_sad | Sedih | frown |
+| mood_angry | Marah | angry |
+| mood_tired | Lelah | sleep |
+| mood_excited | Semangat | zap |
+| mood_grateful | Bersyukur | heart |
+
+User bisa menambah custom moods (label + pilih icon Lucide).
+
+#### 6.4.3 Riwayat
+
+- List descending by `createdAt`
+- Group per tanggal (header tanggal)
+- Setiap entri menampilkan: judul, cuplikan isi (2 baris), mood icon, timestamp
+- Search bar di bagian atas untuk filter berdasarkan judul/isi
 
 ### 6.5 Gym & Workout — _(belum dispesifikasikan, Fase 5)_
 

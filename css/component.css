@@ -688,6 +688,129 @@
   margin-top: var(--spacing-lg);
 }
 
+/* ── Journal ── */
+
+.journal-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+.journal-search-bar {
+  position: relative;
+  margin-bottom: var(--spacing-md);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.journal-search-input {
+  padding-left: 40px;
+}
+
+.journal-day-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.journal-day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.journal-day-title {
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.journal-entry-card {
+  margin-bottom: var(--spacing-sm);
+}
+
+.journal-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.journal-entry-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.journal-entry-title {
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+}
+
+.journal-entry-mood {
+  color: var(--accent);
+  display: flex;
+}
+
+.journal-entry-time {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.journal-entry-body {
+  margin-bottom: var(--spacing-sm);
+}
+
+.journal-entry-content {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.journal-reflection {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--accent-muted);
+}
+
+.journal-reflection-label {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.journal-reflection p {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  margin: 4px 0 0 0;
+}
+
+.journal-entry-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-xs);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border);
+}
+
 /* ── Habit ── */
 
 .habit-card {
