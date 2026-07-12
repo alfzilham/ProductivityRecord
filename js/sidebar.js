@@ -234,7 +234,7 @@ const Sidebar = {
           </div>
         </div>
         <div class="sidebar-user-settings" id="sidebar-user-settings" title="Pengaturan">
-          <i data-lucide="more-horizontal" width="18" height="18"></i>
+          <i data-lucide="more-vertical" width="18" height="18"></i>
         </div>
       </div>
     `;
