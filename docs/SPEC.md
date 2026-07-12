@@ -124,7 +124,85 @@ User bisa memilih dua mode input:
 
 Perubahan mode hanya memengaruhi tampilan form input — data tetap disimpan sebagai array `transactions`.
 
-### 6.2 To-Do List — _(belum dispesifikasikan, Fase 2)_
+### 6.2 To-Do List
+
+**Key localStorage**: `remindme:todo`
+
+#### 6.2.1 Struktur Data
+
+```javascript
+{
+  categories: [
+    {
+      id: "cat_xxx",
+      name: "Pekerjaan",
+      color: "#4ADE80",
+      createdAt: "...",
+    }
+  ],
+  tasks: [
+    {
+      id: "task_xxx",
+      title: "Belajar JavaScript",
+      description: "Selesaikan bab 5",
+      deadlineDate: "2026-07-15",      // YYYY-MM-DD
+      deadlineTime: "17:00",           // HH:mm (opsional, null jika tanpa jam)
+      priority: "medium",              // "low" | "medium" | "high"
+      categoryId: "cat_xxx",           // opsional, null jika tanpa kategori
+      isRecurring: false,              // true = recurring task
+      recurringType: null,             // "daily" | "weekly" | "monthly"
+      recurringEnd: null,              // YYYY-MM-DD (opsional, batas akhir recurring)
+      completed: false,
+      completedAt: null,
+      subtasks: [
+        {
+          id: "sub_xxx",
+          title: "Baca dokumentasi",
+          completed: false,
+        }
+      ],
+      createdAt: "2026-07-10T10:00:00.000Z",
+      updatedAt: null,
+    }
+  ]
+}
+```
+
+#### 6.2.2 Prioritas
+
+| Level | Visual |
+|---|---|
+| High | Badge merah (`badge-danger`) |
+| Medium | Badge kuning (`badge-warning`) |
+| Low | Badge hijau (`badge-success`) |
+
+#### 6.2.3 Kategori / Tag
+
+User bisa membuat kategori custom dengan nama dan warna. Tidak ada fixed/default categories (beda dengan Finance). Kategori bisa diedit/dihapus. Penghapusan kategori menghapus referensi `categoryId` di task terkait (task tetap ada, kategori jadi null).
+
+#### 6.2.4 Sub-task
+
+- Setiap task bisa memiliki 0+ sub-task
+- Sub-task punya: `id`, `title`, `completed`
+- Task otomatis ter-centang selesai jika semua sub-task selesai
+
+#### 6.2.5 Recurring Task
+
+- Task dengan `isRecurring: true` memiliki `recurringType: "daily" | "weekly" | "monthly"`
+- Saat task di-centang selesai, **task baru** digenerate dengan tanggal deadline berikutnya
+- Jika task tidak selesai di periode sebelumnya, task **tetap muncul** (tidak skip) sampai di-centang — user harus centang task lama dulu, baru task baru terbuat
+- `recurringEnd` adalah batas akhir (opsional); jika terlewat, task tidak di-recur lagi
+
+#### 6.2.6 In-App Reminder
+
+- Task dengan deadline dalam 24 jam ke depan (dari waktu sekarang) ditandai dengan ikon/teks "Hampir deadline"
+- Task yang deadline-nya sudah terlewat (overdue) ditandai dengan teks merah "Terlewat"
+- Semua visual indicator — tidak ada notifikasi push/system
+
+#### 6.2.7 Tampilan
+
+- **List View** (default): Group task dalam 4 section — Hari Ini, Mendatang, Terlewat, Selesai
+- **Kalender View**: Grid kalender mini (seperti kalender bulanan), menampilkan jumlah task per tanggal
 
 ### 6.3 Habit Tracker — _(belum dispesifikasikan, Fase 3)_
 
