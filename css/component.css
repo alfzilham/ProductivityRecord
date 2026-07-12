@@ -2116,6 +2116,77 @@
   max-width: 380px;
 }
 
+/* ── Danger Zone ── */
+
+.danger-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.danger-card-danger {
+  border-color: rgba(248, 113, 113, 0.3);
+  background-color: rgba(248, 113, 113, 0.04);
+}
+
+.danger-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.danger-card-title {
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+  margin-bottom: 2px;
+}
+
+.danger-card-desc {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.danger-card-action {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.danger-btn {
+  background-color: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  font-size: var(--text-caption);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.danger-btn:hover {
+  opacity: 0.85;
+}
+
+.danger-btn-danger {
+  background-color: #DC2626;
+}
+
+.danger-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* ── Settings Modal ── */
 
 .settings-modal {

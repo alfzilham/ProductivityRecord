@@ -63,6 +63,7 @@ const SETTINGS_TABS = [
   { id: 'notification', label: 'Notification', icon: 'bell' },
   { id: 'privacy', label: 'Privacy', icon: 'shield' },
   { id: 'faq', label: 'FAQ', icon: 'help-circle' },
+  { id: 'danger', label: 'Danger Zone', icon: 'alert-triangle' },
   { id: 'about', label: 'About', icon: 'info' },
 ];
 
@@ -226,6 +227,7 @@ const Settings = {
       case 'appearance': return this.renderAppearance();
       case 'notification': return this.renderNotification();
       case 'privacy': return this.renderPrivacy();
+      case 'danger': return this.renderDangerZone();
       case 'faq': return this.renderFaq();
       case 'about': return this.renderAbout();
       default: return this.renderProfile();
@@ -377,6 +379,75 @@ const Settings = {
     `;
   },
 
+  handleDangerConfirm(title, body, callback) {
+    this.showModal({
+      title,
+      body: `<p>${body}</p>`,
+      buttons: [
+        { label: 'Batal', class: 'btn-secondary', action: () => this.hideModal() },
+        { label: 'Ya, Hapus', class: 'danger-btn', action: () => { this.hideModal(); callback(); }},
+      ],
+    });
+  },
+
+  showDangerAccountModal() {
+    let modal = document.getElementById('danger-account-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'danger-account-modal';
+      modal.className = 'settings-modal hidden';
+      modal.innerHTML = `
+        <div class="settings-modal-box" style="border-color:var(--danger)">
+          <div class="settings-modal-header">
+            <h4 style="color:var(--danger);font-size:var(--text-body);font-weight:var(--fw-semibold)">Hapus Account</h4>
+          </div>
+          <div class="settings-modal-body">
+            <p>Semua data Anda akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.</p>
+            <p style="margin-top:var(--spacing-sm)">Ketik <strong>HAPUS</strong> untuk konfirmasi:</p>
+            <input type="text" id="danger-confirm-input" class="input-field" placeholder="Ketik HAPUS" style="margin-top:var(--spacing-sm);text-transform:uppercase">
+          </div>
+          <div class="settings-modal-footer">
+            <button class="btn btn-secondary btn-sm" id="danger-account-batal">Batal</button>
+            <button class="btn btn-sm danger-btn danger-btn-danger" id="danger-account-execute" disabled>Hapus Account</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const input = modal.querySelector('#danger-confirm-input');
+      input.addEventListener('input', () => {
+        document.getElementById('danger-account-execute').disabled = input.value !== 'HAPUS';
+      });
+
+      document.getElementById('danger-account-batal').addEventListener('click', () => {
+        modal.classList.add('hidden');
+        input.value = '';
+        document.getElementById('danger-account-execute').disabled = true;
+      });
+
+      document.getElementById('danger-account-execute').addEventListener('click', () => {
+        if (input.value === 'HAPUS') {
+          modal.classList.add('hidden');
+          input.value = '';
+          const keys = ['remindme:finance', 'remindme:todo', 'remindme:habit', 'remindme:journal', 'remindme:gym', 'remindme:profile', 'remindme:appearance', 'remindme:notification', 'remindme:sidebar', 'remindme:backup'];
+          keys.forEach(k => Storage.remove(k));
+          this.showToast('Akun berhasil dihapus');
+          setTimeout(() => location.reload(), 1200);
+        }
+      });
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          input.value = '';
+          document.getElementById('danger-account-execute').disabled = true;
+        }
+      });
+    }
+
+    modal.classList.remove('hidden');
+  },
+
   showToast(message) {
     let toast = document.getElementById('global-toast');
     if (!toast) {
@@ -455,6 +526,60 @@ const Settings = {
         <button class="btn btn-secondary btn-sm" id="import-btn">
           <i data-lucide="upload" width="14" height="14"></i> Pilih File
         </button>
+      </div>
+    `;
+  },
+
+  renderDangerZone() {
+    const moduleKeys = [
+      { key: 'remindme:finance', label: 'Finance' },
+      { key: 'remindme:todo', label: 'To-Do List' },
+      { key: 'remindme:habit', label: 'Habit Tracker' },
+      { key: 'remindme:journal', label: 'Journal' },
+      { key: 'remindme:gym', label: 'Gym & Workout' },
+    ];
+
+    return `
+      <div class="settings-section">
+        <h3 class="settings-section-title" style="color:var(--danger)">Danger Zone</h3>
+        <p class="form-hint" style="margin-bottom:var(--spacing-lg)">Tindakan di bawah ini bersifat permanen dan tidak dapat dibatalkan.</p>
+
+        <div class="danger-card">
+          <div class="danger-card-body">
+            <h4 class="danger-card-title">Reset Semua Data</h4>
+            <p class="danger-card-desc">Hapus seluruh data aplikasi dari semua modul. Data tidak dapat dikembalikan.</p>
+          </div>
+          <button class="btn btn-sm danger-btn" id="danger-reset-all">Hapus Semua</button>
+        </div>
+
+        <div class="danger-card">
+          <div class="danger-card-body">
+            <h4 class="danger-card-title">Reset Pengaturan</h4>
+            <p class="danger-card-desc">Kembalikan pengaturan profil, tampilan, notifikasi, dan sidebar ke default.</p>
+          </div>
+          <button class="btn btn-sm danger-btn" id="danger-reset-settings">Reset</button>
+        </div>
+
+        <div class="danger-card">
+          <div class="danger-card-body">
+            <h4 class="danger-card-title">Hapus Data per Modul</h4>
+            <p class="danger-card-desc">Pilih modul yang ingin dihapus datanya.</p>
+          </div>
+          <div class="danger-card-action">
+            <select id="danger-module-select" class="input-field" style="max-width:180px">
+              ${moduleKeys.map(m => `<option value="${m.key}">${m.label}</option>`).join('')}
+            </select>
+            <button class="btn btn-sm danger-btn" id="danger-delete-module">Hapus</button>
+          </div>
+        </div>
+
+        <div class="danger-card danger-card-danger">
+          <div class="danger-card-body">
+            <h4 class="danger-card-title" style="color:var(--danger)">Hapus Account</h4>
+            <p class="danger-card-desc">Hapus seluruh data secara permanen. Tindakan ini memerlukan konfirmasi dengan mengetik "HAPUS".</p>
+          </div>
+          <button class="btn btn-sm danger-btn danger-btn-danger" id="danger-delete-account">Hapus Account</button>
+        </div>
       </div>
     `;
   },
@@ -614,6 +739,44 @@ const Settings = {
 
       if (e.target.classList.contains('settings-notif-time')) {
         setTimeout(() => this.autoSaveNotification(), 50);
+        return;
+      }
+
+      if (e.target.closest('#danger-reset-all')) {
+        this.handleDangerConfirm('Reset Semua Data', 'Semua data aplikasi akan dihapus permanen. Lanjutkan?', () => {
+          const keys = ['remindme:finance', 'remindme:todo', 'remindme:habit', 'remindme:journal', 'remindme:gym', 'remindme:profile', 'remindme:appearance', 'remindme:notification', 'remindme:sidebar', 'remindme:backup'];
+          keys.forEach(k => Storage.remove(k));
+          this.showToast('Semua data berhasil dihapus');
+          setTimeout(() => location.reload(), 1200);
+        });
+        return;
+      }
+
+      if (e.target.closest('#danger-reset-settings')) {
+        this.handleDangerConfirm('Reset Pengaturan', 'Pengaturan profil, tampilan, notifikasi, dan sidebar akan dikembalikan ke default. Lanjutkan?', () => {
+          const keys = ['remindme:profile', 'remindme:appearance', 'remindme:notification', 'remindme:sidebar'];
+          keys.forEach(k => Storage.remove(k));
+          this.showToast('Pengaturan berhasil direset');
+          setTimeout(() => location.reload(), 1200);
+        });
+        return;
+      }
+
+      if (e.target.closest('#danger-delete-module')) {
+        const key = document.getElementById('danger-module-select')?.value;
+        if (key) {
+          const label = document.querySelector(`#danger-module-select option[value="${key}"]`)?.textContent || key;
+          this.handleDangerConfirm('Hapus Data Modul', `Data modul "${label}" akan dihapus permanen. Lanjutkan?`, () => {
+            Storage.remove(key);
+            this.showToast(`Data ${label} berhasil dihapus`);
+            setTimeout(() => location.reload(), 1200);
+          });
+        }
+        return;
+      }
+
+      if (e.target.closest('#danger-delete-account')) {
+        this.showDangerAccountModal();
         return;
       }
 
