@@ -338,9 +338,35 @@ const Settings = {
           </div>
         </div>
 
-        <button class="btn btn-primary btn-sm" id="save-notification-btn">Simpan Pengaturan</button>
       </div>
     `;
+  },
+
+  showToast(message) {
+    let toast = document.getElementById('global-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'global-toast';
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <i data-lucide="check-circle" width="16" height="16" style="color:var(--success);flex-shrink:0"></i>
+        <span id="toast-message"></span>
+      `;
+      document.body.appendChild(toast);
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    const msgEl = document.getElementById('toast-message');
+    if (msgEl) msgEl.textContent = message;
+
+    toast.classList.remove('toast-hide');
+    toast.classList.add('toast-show');
+
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => {
+      toast.classList.remove('toast-show');
+      toast.classList.add('toast-hide');
+    }, 2500);
   },
 
   renderPrivacy() {
@@ -512,8 +538,15 @@ const Settings = {
         return;
       }
 
-      if (e.target.closest('#save-notification-btn')) {
-        this.handleSaveNotification();
+      // Auto-save on notification input changes
+      if (e.target.classList.contains('settings-notif-cb') ||
+          e.target.classList.contains('settings-notif-event-cb')) {
+        setTimeout(() => this.autoSaveNotification(), 50);
+        return;
+      }
+
+      if (e.target.classList.contains('settings-notif-time')) {
+        setTimeout(() => this.autoSaveNotification(), 50);
         return;
       }
 
@@ -551,6 +584,7 @@ const Settings = {
         dropdownOption.classList.add('active');
         panel.classList.remove('open');
         trigger.classList.remove('open');
+        this.autoSaveNotification();
         return;
       }
 
@@ -641,7 +675,7 @@ const Settings = {
     return map[hours] || '24 jam sebelumnya';
   },
 
-  handleSaveNotification() {
+  autoSaveNotification() {
     const n = this.notification;
     n.taskDeadlineEnabled = document.querySelector('.settings-notif-cb[data-key="taskDeadlineEnabled"]')?.checked || false;
     n.habitReminderEnabled = document.querySelector('.settings-notif-cb[data-key="habitReminderEnabled"]')?.checked || false;
@@ -653,11 +687,7 @@ const Settings = {
     document.querySelectorAll('.settings-notif-event-cb:checked').forEach(cb => events.push(cb.value));
     n.browserNotifEvents = events;
     this.saveNotification();
-    this.showModal({
-      title: 'Tersimpan',
-      body: '<p>Pengaturan notifikasi berhasil diperbarui.</p>',
-      buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
-    });
+    this.showToast('Pengaturan notifikasi berhasil diubah');
   },
 
   handleTestNotification() {
