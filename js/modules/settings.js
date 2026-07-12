@@ -568,16 +568,16 @@ const Settings = {
           <div class="danger-card-action" style="justify-content:flex-start">
             <div class="dropdown-wrapper" style="flex-shrink:0">
               <button class="dropdown-trigger" id="danger-module-trigger" data-key="dangerModule">
-                <span class="dropdown-value">Finance</span>
+                <span class="dropdown-value" style="color:var(--text-muted)">Pilih modul</span>
                 <i data-lucide="chevron-down" class="dropdown-arrow" width="14" height="14"></i>
               </button>
               <div class="dropdown-panel" data-key="dangerModule">
                 ${moduleKeys.map(m => `
-                  <button class="dropdown-option ${m.key === 'remindme:finance' ? 'active' : ''}" data-value="${m.key}">${m.label}</button>
+                  <button class="dropdown-option" data-value="${m.key}">${m.label}</button>
                 `).join('')}
               </div>
             </div>
-            <button class="btn btn-sm danger-btn" id="danger-delete-module">Hapus</button>
+            <button class="btn btn-sm danger-btn" id="danger-delete-module" disabled>Hapus</button>
           </div>
         </div>
 
@@ -772,8 +772,12 @@ const Settings = {
 
       if (e.target.closest('#danger-delete-module')) {
         const trigger = document.getElementById('danger-module-trigger');
-        const key = trigger?.dataset.value || 'remindme:finance';
-        const label = trigger?.querySelector('.dropdown-value')?.textContent || 'Finance';
+        const key = trigger?.dataset.value;
+        if (!key) {
+          this.showToast('Pilih modul terlebih dahulu');
+          return;
+        }
+        const label = trigger?.querySelector('.dropdown-value')?.textContent || 'Modul';
         this.handleDangerConfirm('Hapus Data Modul', `Data modul "${label}" akan dihapus permanen. Lanjutkan?`, () => {
           Storage.remove(key);
           this.showToast(`Data ${label} berhasil dihapus`);
@@ -835,7 +839,16 @@ const Settings = {
         dropdownOption.classList.add('active');
         panel.classList.remove('open');
         trigger.classList.remove('open');
-        this.autoSaveNotification();
+
+        // Restore text color and enable button for danger module dropdown
+        if (trigger.id === 'danger-module-trigger') {
+          valueEl.style.color = '';
+          document.getElementById('danger-delete-module').disabled = false;
+        }
+
+        if (trigger.dataset.key === 'taskDeadlineHours') {
+          this.autoSaveNotification();
+        }
         return;
       }
 
