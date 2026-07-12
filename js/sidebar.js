@@ -9,10 +9,10 @@ const NAV_ITEMS = [
 
 const SIDEBAR_STORAGE_KEY = 'remindme:sidebar';
 
-const USER_PROFILE = {
-  username: 'user',
-  email: 'user@example.com',
-};
+function getSidebarProfile() {
+  const p = Storage.get('remindme:profile');
+  return p || { username: 'user', email: 'user@example.com' };
+}
 
 const Sidebar = {
   expanded: true,
@@ -223,14 +223,15 @@ const Sidebar = {
   },
 
   renderUserSection() {
-    const initial = USER_PROFILE.username.charAt(0).toUpperCase();
+    const p = getSidebarProfile();
+    const initial = p.username.charAt(0).toUpperCase();
     return `
       <div class="sidebar-user-section">
-        <div class="sidebar-user-main" id="sidebar-user-avatar">
+        <div class="sidebar-user-main" id="sidebar-user-avatar" title="Pengaturan">
           <div class="sidebar-user-avatar">${initial}</div>
           <div class="sidebar-user-info">
-            <span class="sidebar-user-name">${this.escHtml(USER_PROFILE.username)}</span>
-            <span class="sidebar-user-email">${this.escHtml(USER_PROFILE.email)}</span>
+            <span class="sidebar-user-name">${this.escHtml(p.username)}</span>
+            <span class="sidebar-user-email">${this.escHtml(p.email)}</span>
           </div>
         </div>
         <div class="sidebar-user-settings" id="sidebar-user-settings" title="Pengaturan">
@@ -332,13 +333,13 @@ const Sidebar = {
       }
 
       if (e.target.closest('#sidebar-user-settings') || e.target.closest('.sidebar-user-settings')) {
-        // Settings — untuk sekarang placeholder, nanti arahkan ke halaman pengaturan
+        window.location.href = 'settings.html';
         return;
       }
 
       if (e.target.closest('#sidebar-user-avatar')) {
         if (!this.expanded) {
-          // Avatar click di collapsed — untuk sekarang placeholder
+          window.location.href = 'settings.html';
         }
         return;
       }
