@@ -320,6 +320,60 @@ User bisa menambah custom moods (label + pilih icon Lucide).
 - Setiap entri menampilkan: judul, cuplikan isi (2 baris), mood icon, timestamp
 - Search bar di bagian atas untuk filter berdasarkan judul/isi
 
-### 6.5 Gym & Workout — _(belum dispesifikasikan, Fase 5)_
+### 6.5 Gym & Workout
+
+**Key localStorage**: `remindme:gym`
+
+#### 6.5.1 Struktur Data
+
+```javascript
+{
+  unit: "kg",                           // "kg" | "lbs" (global)
+  templates: [
+    {
+      id: "tpl_xxx",
+      name: "Push Day",
+      exercises: [
+        { name: "Bench Press", sets: 4 },
+        { name: "Shoulder Press", sets: 3 },
+      ],
+      createdAt: "...",
+    }
+  ],
+  sessions: [
+    {
+      id: "sess_xxx",
+      date: "2026-07-12",               // YYYY-MM-DD
+      templateId: null,                   // null jika free, string jika pakai template
+      templateName: null,                 // snapshot nama template saat sesi dibuat
+      note: "Sesi hari ini berat",
+      exercises: [
+        {
+          name: "Bench Press",
+          sets: [
+            { rep: 10, weight: 60 },
+            { rep: 8, weight: 65 },
+            { rep: 6, weight: 70 },
+          ]
+        }
+      ],
+      createdAt: "2026-07-12T10:00:00.000Z",
+    }
+  ]
+}
+```
+
+#### 6.5.2 Template vs Free Session
+
+| Mode | Deskripsi |
+|---|---|
+| Free | Pilih nama latihan dan input set/rep/berat langsung saat sesi |
+| Template | Pilih template yang sudah dibuat → form langsung terisi daftar latihan → input set/rep/berat |
+
+#### 6.5.3 Progress Chart
+
+- Pilih nama latihan (dari semua sesi) → lihat chart garis perkembangan berat/reps
+- Sumbu X: tanggal sesi
+- Sumbu Y: berat maksimum untuk latihan tersebut
 
 ### 6.6 Dashboard — _(belum dispesifikasikan, Fase 6)_

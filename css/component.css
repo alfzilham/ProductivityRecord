@@ -811,6 +811,172 @@
   border-top: 1px solid var(--border);
 }
 
+/* ── Gym & Workout ── */
+
+.gym-tabs {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+}
+
+.gym-tab {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--text-caption);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+  text-align: center;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.gym-tab.active {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.gym-tab:hover:not(.active) {
+  color: var(--text-primary);
+}
+
+.gym-form-card {
+  margin-bottom: var(--spacing-lg);
+}
+
+.gym-exercise-row {
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.gym-sets-container {
+  margin-top: var(--spacing-sm);
+  padding-left: var(--spacing-sm);
+}
+
+.gym-set-row {
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  gap: var(--spacing-sm);
+}
+
+.gym-set-label {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.gym-set-row .form-group {
+  max-width: 100px;
+}
+
+.gym-session-card {
+  margin-bottom: var(--spacing-sm);
+}
+
+.gym-session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.gym-session-date {
+  font-weight: var(--fw-semibold);
+  font-size: var(--text-body);
+  margin-right: var(--spacing-sm);
+}
+
+.gym-session-meta {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.gym-session-note {
+  font-size: var(--text-caption);
+  color: var(--text-secondary);
+  margin: var(--spacing-xs) 0 var(--spacing-sm);
+  font-style: italic;
+}
+
+.gym-session-exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gym-exercise-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-body);
+}
+
+.gym-exercise-summary:hover {
+  background-color: var(--bg-surface-hover);
+}
+
+.gym-ex-name {
+  font-weight: var(--fw-medium);
+}
+
+.gym-ex-detail {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+}
+
+.gym-delete-session {
+  margin-top: var(--spacing-sm);
+}
+
+/* ── Progress ── */
+
+.progress-chart {
+  margin: var(--spacing-md) 0;
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.progress-table {
+  margin-top: var(--spacing-md);
+}
+
+.progress-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  font-size: var(--text-body);
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-table-row:last-child {
+  border-bottom: none;
+}
+
 /* ── Habit ── */
 
 .habit-card {

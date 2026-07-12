@@ -58,9 +58,11 @@ Daftar task teknis dan known issues untuk ProductivityRecord. Diupdate setiap fa
 
 ## Fase 5 — Gym & Workout
 
-- [ ] Spec struktur data Gym di `SPEC.md`
-- [ ] Log sesi latihan (set, rep, berat)
-- [ ] Riwayat progress per latihan
+- [x] Spec struktur data Gym di `SPEC.md`
+- [ ] Log sesi latihan (free + template)
+- [ ] Template management
+- [ ] Riwayat sesi kronologis
+- [ ] Progress chart per latihan
 
 ## Fase 6 — Dashboard
 
