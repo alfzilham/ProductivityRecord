@@ -560,12 +560,12 @@ const Settings = {
           <button class="btn btn-sm danger-btn" id="danger-reset-settings">Reset</button>
         </div>
 
-        <div class="danger-card">
+        <div class="danger-card" style="flex-direction:column;align-items:stretch">
           <div class="danger-card-body">
             <h4 class="danger-card-title">Hapus Data per Modul</h4>
             <p class="danger-card-desc">Pilih modul yang ingin dihapus datanya.</p>
           </div>
-          <div class="danger-card-action">
+          <div class="danger-card-action" style="justify-content:flex-start">
             <div class="dropdown-wrapper" style="flex-shrink:0">
               <button class="dropdown-trigger" id="danger-module-trigger" data-key="dangerModule">
                 <span class="dropdown-value">Finance</span>
