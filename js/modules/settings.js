@@ -288,7 +288,7 @@ const Settings = {
                 <span class="dropdown-value">${this.getDeadlineLabel(n.taskDeadlineHours)}</span>
                 <i data-lucide="chevron-down" class="dropdown-arrow" width="14" height="14"></i>
               </button>
-              <div class="dropdown-panel hidden" data-key="taskDeadlineHours">
+              <div class="dropdown-panel" data-key="taskDeadlineHours">
                 <button class="dropdown-option ${n.taskDeadlineHours === 24 ? 'active' : ''}" data-value="24">24 jam sebelumnya</button>
                 <button class="dropdown-option ${n.taskDeadlineHours === 12 ? 'active' : ''}" data-value="12">12 jam sebelumnya</button>
                 <button class="dropdown-option ${n.taskDeadlineHours === 6 ? 'active' : ''}" data-value="6">6 jam sebelumnya</button>
@@ -527,11 +527,11 @@ const Settings = {
       if (dropdownTrigger) {
         const panel = dropdownTrigger.parentElement.querySelector('.dropdown-panel');
         if (panel) {
-          const isOpen = !panel.classList.contains('hidden');
-          document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.add('hidden'));
+          const isOpen = panel.classList.contains('open');
+          document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.remove('open'));
           document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('open'));
           if (!isOpen) {
-            panel.classList.remove('hidden');
+            panel.classList.add('open');
             dropdownTrigger.classList.add('open');
           }
         }
@@ -549,7 +549,7 @@ const Settings = {
         trigger.dataset.value = value;
         panel.querySelectorAll('.dropdown-option').forEach(o => o.classList.remove('active'));
         dropdownOption.classList.add('active');
-        panel.classList.add('hidden');
+        panel.classList.remove('open');
         trigger.classList.remove('open');
         return;
       }
@@ -594,7 +594,7 @@ const Settings = {
 
       // Close dropdowns when clicking outside
       if (!e.target.closest('.dropdown-wrapper')) {
-        document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.add('hidden'));
+        document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.remove('open'));
         document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('open'));
       }
     });
