@@ -62,7 +62,41 @@ const SETTINGS_TABS = [
   { id: 'appearance', label: 'Appearance', icon: 'palette' },
   { id: 'notification', label: 'Notification', icon: 'bell' },
   { id: 'privacy', label: 'Privacy', icon: 'shield' },
+  { id: 'faq', label: 'FAQ', icon: 'help-circle' },
   { id: 'about', label: 'About', icon: 'info' },
+];
+
+const FAQ_DATA = [
+  {
+    category: 'Data & Privasi',
+    items: [
+      { q: 'Apakah data saya aman?', a: 'Semua data Anda disimpan di localStorage browser milik Anda sendiri. Tidak ada data yang dikirim ke server mana pun.' },
+      { q: 'Apakah data bisa hilang?', a: 'Ya, data bisa hilang jika cache browser dibersihkan atau localStorage dihapus. Selalu backup data Anda secara berkala melalui fitur Export di tab Privacy.' },
+      { q: 'Bagaimana cara backup data?', a: 'Buka tab Privacy, pilih modul yang ingin di-backup pada bagian Export, lalu klik tombol Export Selected untuk mengunduh file JSON.' },
+      { q: 'Apakah data saya dibagikan ke pihak ketiga?', a: 'Tidak. ProductivityRecord tidak mengumpulkan, menjual, atau membagikan data Anda ke pihak ketiga mana pun.' },
+      { q: 'Apakah ada pengumpulan data analytics?', a: 'Tidak ada. Aplikasi berjalan 100% secara lokal dan tidak mengirimkan data analytics, tracking, atau cookies ke server mana pun.' },
+    ],
+  },
+  {
+    category: 'Penggunaan',
+    items: [
+      { q: 'Apakah aplikasi ini gratis?', a: 'Ya, 100% gratis tanpa iklan, tanpa biaya berlangganan, dan tanpa fitur premium.' },
+      { q: 'Apakah perlu koneksi internet?', a: 'Koneksi internet hanya diperlukan saat pertama kali halaman di-load untuk mengunduh font dan icon dari CDN. Setelah itu aplikasi berjalan sepenuhnya offline.' },
+      { q: 'Bisakah dipakai di HP/tablet?', a: 'Ya. Tampilan sudah responsif dan mobile-friendly dengan navigasi bottom bar untuk layar kecil.' },
+      { q: 'Bisakah data diakses dari perangkat lain?', a: 'Tidak. Data tersimpan di localStorage per browser. Belum ada fitur sinkronisasi lintas perangkat.' },
+      { q: 'Berapa kapasitas maksimal data?', a: 'LocalStorage umumnya memiliki batas 5–10 MB per origin. Untuk data teks dan angka skala personal, kapasitas ini cukup untuk penggunaan jangka panjang.' },
+    ],
+  },
+  {
+    category: 'Troubleshooting',
+    items: [
+      { q: 'Kenapa data saya tidak muncul?', a: 'Kemungkinan Tracking Prevention browser memblokir akses ke localStorage. Coba setel Tracking Prevention ke "Basic" atau nonaktifkan untuk situs ini.' },
+      { q: 'Bagaimana cara mereset semua data?', a: 'Buka DevTools (F12) → Application → Storage → Clear site data. Atau buka pengaturan browser → Privacy & Security → Clear browsing data.' },
+      { q: 'Kenapa notifikasi browser tidak muncul?', a: 'Pastikan Anda sudah mengizinkan notifikasi melalui tab Notification di panel Settings. Browser juga memerlukan interaksi pengguna sebelum izin notifikasi bisa diberikan.' },
+      { q: 'Kenapa halaman tidak berubah setelah input data?', a: 'Coba lakukan hard refresh (Ctrl+F5) untuk memuat ulang halaman. Jika masih bermasalah, hapus cache browser.' },
+      { q: 'Apakah bisa menggunakan browser lain?', a: 'Ya. ProductivityRecord mendukung semua browser modern (Chrome, Firefox, Edge, Safari). Data tersimpan per browser dan tidak bisa dipindahkan secara otomatis antar browser.' },
+    ],
+  },
 ];
 
 const Settings = {
@@ -192,6 +226,7 @@ const Settings = {
       case 'appearance': return this.renderAppearance();
       case 'notification': return this.renderNotification();
       case 'privacy': return this.renderPrivacy();
+      case 'faq': return this.renderFaq();
       case 'about': return this.renderAbout();
       default: return this.renderProfile();
     }
@@ -424,6 +459,38 @@ const Settings = {
     `;
   },
 
+  renderFaq() {
+    return `
+      <div class="settings-section">
+        <h3 class="settings-section-title">FAQ</h3>
+        ${FAQ_DATA.map(cat => `
+          <h4 class="faq-category-title">${cat.category}</h4>
+          ${cat.items.map((item, i) => `
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>${item.q}</span>
+                <i data-lucide="chevron-down" class="faq-arrow" width="16" height="16"></i>
+              </button>
+              <div class="faq-answer">
+                <p>${item.a}</p>
+              </div>
+            </div>
+          `).join('')}
+        `).join('')}
+
+        <div class="faq-divider"></div>
+
+        <div class="faq-contact">
+          <h4 class="faq-contact-title">Ada pertanyaan lain?</h4>
+          <p class="faq-contact-desc">Jika Anda memiliki pertanyaan yang belum terjawab di atas, jangan ragu untuk menghubungi pengembang melalui WhatsApp untuk mendapatkan bantuan lebih lanjut.</p>
+          <a href="https://wa.me/6285213896460" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+            <i data-lucide="message-circle" width="14" height="14"></i> Hubungi via WhatsApp
+          </a>
+        </div>
+      </div>
+    `;
+  },
+
   renderAbout() {
     return `
       <div class="settings-section">
@@ -554,6 +621,20 @@ const Settings = {
 
       if (e.target.closest('#test-notif-btn')) {
         this.handleTestNotification();
+        return;
+      }
+
+      // FAQ accordion toggle
+      if (e.target.closest('.faq-question')) {
+        const item = e.target.closest('.faq-item');
+        if (item) {
+          const answer = item.querySelector('.faq-answer');
+          const question = item.querySelector('.faq-question');
+          if (answer) {
+            answer.classList.toggle('open');
+            question.classList.toggle('open');
+          }
+        }
         return;
       }
 
