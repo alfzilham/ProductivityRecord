@@ -49,6 +49,8 @@
   --spacing-2xl: 48px;
 
   --sidebar-width: 64px;
+  --sidebar-width-expanded: 240px;
+  --sidebar-logo-size: 32px;
   --bottom-nav-height: 56px;
 
   --transition-fast: 150ms ease;
