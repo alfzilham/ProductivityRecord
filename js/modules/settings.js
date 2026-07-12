@@ -274,45 +274,59 @@ const Settings = {
         <h3 class="settings-section-title">Notification</h3>
 
         <div class="settings-notif-group">
-          <label class="settings-notif-toggle">
-            <input type="checkbox" class="settings-notif-checkbox" data-key="taskDeadlineEnabled" ${n.taskDeadlineEnabled ? 'checked' : ''}>
-            <span class="settings-notif-label">Pengingat deadline task</span>
-          </label>
+          <div class="settings-notif-row">
+            <span class="toggle-label">Pengingat deadline task</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="settings-notif-cb" data-key="taskDeadlineEnabled" ${n.taskDeadlineEnabled ? 'checked' : ''}>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
           <div class="settings-notif-sub ${n.taskDeadlineEnabled ? '' : 'disabled'}">
-            <span class="form-hint">Tampilkan peringatan</span>
-            <select class="input-field settings-notif-select" data-key="taskDeadlineHours" ${n.taskDeadlineEnabled ? '' : 'disabled'}>
-              <option value="24" ${n.taskDeadlineHours === 24 ? 'selected' : ''}>24 jam sebelumnya</option>
-              <option value="12" ${n.taskDeadlineHours === 12 ? 'selected' : ''}>12 jam sebelumnya</option>
-              <option value="6" ${n.taskDeadlineHours === 6 ? 'selected' : ''}>6 jam sebelumnya</option>
-              <option value="1" ${n.taskDeadlineHours === 1 ? 'selected' : ''}>1 jam sebelumnya</option>
-            </select>
+            <span class="settings-notif-hint">Tampilkan peringatan</span>
+            <div class="select-wrapper">
+              <select data-key="taskDeadlineHours" ${n.taskDeadlineEnabled ? '' : 'disabled'}>
+                <option value="24" ${n.taskDeadlineHours === 24 ? 'selected' : ''}>24 jam sebelumnya</option>
+                <option value="12" ${n.taskDeadlineHours === 12 ? 'selected' : ''}>12 jam sebelumnya</option>
+                <option value="6" ${n.taskDeadlineHours === 6 ? 'selected' : ''}>6 jam sebelumnya</option>
+                <option value="1" ${n.taskDeadlineHours === 1 ? 'selected' : ''}>1 jam sebelumnya</option>
+              </select>
+              <i data-lucide="chevron-down" class="select-arrow" width="14" height="14"></i>
+            </div>
           </div>
         </div>
 
         <div class="settings-notif-group">
-          <label class="settings-notif-toggle">
-            <input type="checkbox" class="settings-notif-checkbox" data-key="habitReminderEnabled" ${n.habitReminderEnabled ? 'checked' : ''}>
-            <span class="settings-notif-label">Pengingat check-in habit</span>
-          </label>
+          <div class="settings-notif-row">
+            <span class="toggle-label">Pengingat check-in habit</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="settings-notif-cb" data-key="habitReminderEnabled" ${n.habitReminderEnabled ? 'checked' : ''}>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
           <div class="settings-notif-sub ${n.habitReminderEnabled ? '' : 'disabled'}">
-            <span class="form-hint">Waktu pengingat</span>
-            <input type="time" class="input-field settings-notif-time" data-key="habitReminderTime" value="${n.habitReminderTime}" ${n.habitReminderEnabled ? '' : 'disabled'}>
+            <span class="settings-notif-hint">Waktu pengingat</span>
+            <input type="time" class="settings-notif-time" data-key="habitReminderTime" value="${n.habitReminderTime}" ${n.habitReminderEnabled ? '' : 'disabled'}>
           </div>
         </div>
 
         <div class="settings-notif-group">
-          <label class="settings-notif-toggle">
-            <input type="checkbox" class="settings-notif-checkbox" data-key="browserNotifEnabled" ${n.browserNotifEnabled ? 'checked' : ''}>
-            <span class="settings-notif-label">Notifikasi browser (system)</span>
-          </label>
+          <div class="settings-notif-row">
+            <span class="toggle-label">Notifikasi browser</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="settings-notif-cb" data-key="browserNotifEnabled" ${n.browserNotifEnabled ? 'checked' : ''}>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
           <div class="settings-notif-sub ${n.browserNotifEnabled ? '' : 'disabled'}">
-            <span class="form-hint">Event notifikasi</span>
+            <span class="settings-notif-hint">Event notifikasi</span>
             <label class="settings-notif-check-event">
               <input type="checkbox" class="settings-notif-event-cb" value="task_deadline" ${n.browserNotifEvents.includes('task_deadline') ? 'checked' : ''} ${n.browserNotifEnabled ? '' : 'disabled'}>
+              <span class="check-mark"></span>
               Deadline task
             </label>
             <label class="settings-notif-check-event">
               <input type="checkbox" class="settings-notif-event-cb" value="habit_reminder" ${n.browserNotifEvents.includes('habit_reminder') ? 'checked' : ''} ${n.browserNotifEnabled ? '' : 'disabled'}>
+              <span class="check-mark"></span>
               Habit reminder
             </label>
             <button class="btn btn-secondary btn-sm" id="test-notif-btn" style="margin-top:var(--spacing-sm)" ${n.browserNotifEnabled ? '' : 'disabled'}>
@@ -505,8 +519,7 @@ const Settings = {
         return;
       }
 
-      if (e.target.classList.contains('settings-notif-checkbox')) {
-        const key = e.target.dataset.key;
+      if (e.target.classList.contains('settings-notif-cb')) {
         const sub = e.target.closest('.settings-notif-group').querySelector('.settings-notif-sub');
         const inputs = sub.querySelectorAll('select, input, button');
         inputs.forEach(inp => inp.disabled = !e.target.checked);
