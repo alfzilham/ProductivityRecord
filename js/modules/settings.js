@@ -46,8 +46,17 @@ const ALL_MODULES = [
   { key: 'remindme:gym', label: 'Gym & Workout' },
 ];
 
+const SETTINGS_TABS = [
+  { id: 'profile', label: 'Profil', icon: 'user' },
+  { id: 'appearance', label: 'Appearance', icon: 'palette' },
+  { id: 'sidebar', label: 'Sidebar', icon: 'sidebar' },
+  { id: 'data', label: 'Data', icon: 'database' },
+  { id: 'about', label: 'About', icon: 'info' },
+];
+
 const Settings = {
   visible: false,
+  activeTab: 'profile',
   profile: null,
   appearance: null,
 
@@ -76,6 +85,7 @@ const Settings = {
   show() {
     this.loadData();
     this.visible = true;
+    this.activeTab = 'profile';
     this.renderOverlay();
     this.renderPanel();
     this.bindPanelEvents();
@@ -145,14 +155,41 @@ const Settings = {
 
   buildPanelContent() {
     return `
-      <div class="settings-content">
-        ${this.renderProfile()}
-        ${this.renderAppearance()}
-        ${this.renderSidebar()}
-        ${this.renderData()}
-        ${this.renderAbout()}
+      <div class="settings-tab-sidebar">
+        ${SETTINGS_TABS.map(t => `
+          <button class="settings-tab-btn ${this.activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">
+            <i data-lucide="${t.icon}" width="16" height="16"></i>
+            <span>${t.label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="settings-tab-content" id="settings-tab-content">
+        ${this.renderActiveContent()}
       </div>
     `;
+  },
+
+  renderActiveContent() {
+    switch (this.activeTab) {
+      case 'profile': return this.renderProfile();
+      case 'appearance': return this.renderAppearance();
+      case 'sidebar': return this.renderSidebar();
+      case 'data': return this.renderData();
+      case 'about': return this.renderAbout();
+      default: return this.renderProfile();
+    }
+  },
+
+  switchTab(id) {
+    this.activeTab = id;
+    const content = document.getElementById('settings-tab-content');
+    if (content) {
+      content.innerHTML = this.renderActiveContent();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    document.querySelectorAll('.settings-tab-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === id);
+    });
   },
 
   renderProfile() {
@@ -259,7 +296,6 @@ const Settings = {
         <button class="btn btn-secondary btn-sm" id="import-btn">
           <i data-lucide="upload" width="14" height="14"></i> Pilih File
         </button>
-        <p id="import-status" class="form-hint" style="margin-top:var(--spacing-sm)"></p>
       </div>
     `;
   },
@@ -336,6 +372,12 @@ const Settings = {
 
     document.addEventListener('click', (e) => {
       if (!this.visible) return;
+
+      if (e.target.closest('.settings-tab-btn')) {
+        const tab = e.target.closest('.settings-tab-btn');
+        this.switchTab(tab.dataset.tab);
+        return;
+      }
 
       if (e.target.closest('#settings-close-btn') || e.target.closest('.settings-close-btn')) {
         this.hide();
