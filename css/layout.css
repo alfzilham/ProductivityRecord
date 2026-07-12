@@ -307,6 +307,10 @@
   justify-content: center;
 }
 
+#sidebar:not(.is-expanded) .sidebar-item {
+  gap: 0;
+}
+
 .sidebar-item-label {
   font-size: var(--text-body);
   font-weight: var(--fw-medium);
@@ -314,11 +318,15 @@
   visibility: hidden;
   transition: opacity var(--transition-base), visibility var(--transition-base);
   overflow: hidden;
+  width: 0;
+  flex: 0;
 }
 
 .is-expanded .sidebar-item-label {
   opacity: 1;
   visibility: visible;
+  width: auto;
+  flex: none;
 }
 
 /* Tooltip only in collapsed mode */
