@@ -273,6 +273,16 @@
 
 .sidebar-item.active {
   color: var(--accent);
+}
+
+#sidebar:not(.is-expanded) .sidebar-item.active .sidebar-item-icon {
+  background-color: rgba(192, 192, 200, 0.12);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  margin: -8px;
+}
+
+.is-expanded .sidebar-item.active {
   background-color: rgba(192, 192, 200, 0.1);
 }
 
