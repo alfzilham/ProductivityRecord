@@ -478,8 +478,6 @@ const Settings = {
           `).join('')}
         `).join('')}
 
-        <div class="faq-divider"></div>
-
         <div class="faq-contact">
           <h4 class="faq-contact-title">Ada pertanyaan lain?</h4>
           <p class="faq-contact-desc">Jika Anda memiliki pertanyaan yang belum terjawab di atas, jangan ragu untuk menghubungi pengembang melalui WhatsApp untuk mendapatkan bantuan lebih lanjut.</p>
