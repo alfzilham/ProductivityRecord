@@ -206,7 +206,7 @@ const Sidebar = {
         <nav class="sidebar-nav">
           ${NAV_ITEMS.map(item => `
             <a href="${item.href}" class="sidebar-item ${this.currentPage === item.id ? 'active' : ''}" title="${item.label}" data-tooltip="${item.label}">
-              <span class="sidebar-item-icon"><i data-lucide="${item.icon}" width="28" height="28"></i></span>
+              <span class="sidebar-item-icon"><i data-lucide="${item.icon}" width="24" height="24"></i></span>
               <span class="sidebar-item-label">${item.label}</span>
             </a>
           `).join('')}
