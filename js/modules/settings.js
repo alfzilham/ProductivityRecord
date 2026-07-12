@@ -304,11 +304,33 @@ const Settings = {
     return `
       <div class="settings-section">
         <h3 class="settings-section-title">About</h3>
-        <p style="font-size:var(--text-body);margin-bottom:var(--spacing-xs)">ProductivityRecord <strong>v1.0.0</strong></p>
-        <p class="form-hint">Personal productivity platform — pure frontend</p>
-        <a href="https://github.com/alfzilham/ProductivityRecord" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="margin-top:var(--spacing-sm)">
-          <i data-lucide="external-link" width="14" height="14"></i> GitHub
+        <p style="font-size:var(--text-h3);font-weight:var(--fw-bold);margin-bottom:var(--spacing-sm)">ProductivityRecord <span style="font-weight:var(--fw-regular);color:var(--text-muted)">v1.0.0</span></p>
+        <p style="font-size:var(--text-body);color:var(--text-secondary);line-height:1.7;margin-bottom:var(--spacing-lg)">
+          Aplikasi pencatatan produktivitas harian yang menyatukan keuangan, tugas, kebiasaan, jurnal, dan olahraga dalam satu tempat — tanpa ribet, tanpa login, tanpa server.
+        </p>
+
+        <h4 style="font-size:var(--text-body);font-weight:var(--fw-semibold);margin-bottom:var(--spacing-sm);color:var(--text-primary)">Apa yang bisa dilakukan?</h4>
+        <ul style="font-size:var(--text-body);color:var(--text-secondary);line-height:2;margin-bottom:var(--spacing-lg);padding-left:var(--spacing-md);list-style:disc">
+          <li>Catat pemasukan & pengeluaran dengan rekap harian/minggu/bulan</li>
+          <li>Kelola tugas dengan prioritas, deadline, sub-task, dan recurring</li>
+          <li>Lacak kebiasaan dengan streak dan kalender mini</li>
+          <li>Tulis jurnal harian dengan mood tag</li>
+          <li>Log sesi gym dengan progress chart</li>
+          <li>Lihat ringkasan semua data di Dashboard</li>
+        </ul>
+
+        <h4 style="font-size:var(--text-body);font-weight:var(--fw-semibold);margin-bottom:var(--spacing-sm);color:var(--text-primary)">Manfaat</h4>
+        <ul style="font-size:var(--text-body);color:var(--text-secondary);line-height:2;margin-bottom:var(--spacing-lg);padding-left:var(--spacing-md);list-style:disc">
+          <li>Semua data tersimpan aman di browser Anda sendiri</li>
+          <li>Bisa langsung dipakai — buka browser, catat, selesai</li>
+          <li>Tampilan dark theme yang nyaman di mata</li>
+          <li>Gratis, ringan, tanpa iklan</li>
+        </ul>
+
+        <a href="https://github.com/alfzilham/ProductivityRecord" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="margin-bottom:var(--spacing-sm)">
+          <i data-lucide="external-link" width="14" height="14"></i> GitHub Repository
         </a>
+        <p style="font-size:var(--text-caption);color:var(--text-muted)">Dibuat oleh Alfiz Ilham</p>
       </div>
     `;
   },
