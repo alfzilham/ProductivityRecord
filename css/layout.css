@@ -395,13 +395,49 @@
 #sidebar:not(.is-expanded) .sidebar-user-section {
   display: flex;
   justify-content: center;
-  padding: var(--spacing-md) 0 var(--spacing-sm);
+  padding: var(--spacing-md) 0 var(--spacing-lg);
 }
 
 .is-expanded .sidebar-user-section {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-user-main {
+  display: flex;
+  align-items: center;
   gap: var(--spacing-sm);
+  min-width: 0;
+  flex: 1;
+}
+
+#sidebar:not(.is-expanded) .sidebar-user-main {
+  cursor: pointer;
+}
+
+/* ── Settings button ── */
+
+.sidebar-user-settings {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.sidebar-user-settings:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-hover);
+}
+
+.is-expanded .sidebar-user-settings {
+  display: flex;
 }
 
 .sidebar-user-avatar {

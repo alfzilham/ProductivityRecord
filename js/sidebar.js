@@ -226,10 +226,15 @@ const Sidebar = {
     const initial = USER_PROFILE.username.charAt(0).toUpperCase();
     return `
       <div class="sidebar-user-section">
-        <div class="sidebar-user-avatar">${initial}</div>
-        <div class="sidebar-user-info">
-          <span class="sidebar-user-name">${this.escHtml(USER_PROFILE.username)}</span>
-          <span class="sidebar-user-email">${this.escHtml(USER_PROFILE.email)}</span>
+        <div class="sidebar-user-main" id="sidebar-user-avatar">
+          <div class="sidebar-user-avatar">${initial}</div>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user-name">${this.escHtml(USER_PROFILE.username)}</span>
+            <span class="sidebar-user-email">${this.escHtml(USER_PROFILE.email)}</span>
+          </div>
+        </div>
+        <div class="sidebar-user-settings" id="sidebar-user-settings" title="Pengaturan">
+          <i data-lucide="more-horizontal" width="18" height="18"></i>
         </div>
       </div>
     `;
@@ -322,6 +327,18 @@ const Sidebar = {
             const input = document.getElementById('sidebar-search-input');
             if (input) input.focus();
           }, 300);
+        }
+        return;
+      }
+
+      if (e.target.closest('#sidebar-user-settings') || e.target.closest('.sidebar-user-settings')) {
+        // Settings — untuk sekarang placeholder, nanti arahkan ke halaman pengaturan
+        return;
+      }
+
+      if (e.target.closest('#sidebar-user-avatar')) {
+        if (!this.expanded) {
+          // Avatar click di collapsed — untuk sekarang placeholder
         }
         return;
       }
