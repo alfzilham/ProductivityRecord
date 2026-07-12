@@ -726,11 +726,7 @@ const Settings = {
   handleExport() {
     const checked = document.querySelectorAll('.settings-export-checkbox:checked');
     if (checked.length === 0) {
-      this.showModal({
-        title: 'Tidak ada data',
-        body: '<p>Pilih minimal satu modul untuk di-export.</p>',
-        buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
-      });
+      this.showToast('Pilih minimal satu modul untuk di-export');
       return;
     }
     const data = {};
@@ -746,6 +742,7 @@ const Settings = {
     a.download = `productivity-record-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    this.showToast('Data berhasil di-download');
   },
 
   handleImport(fileInput) {
@@ -764,30 +761,13 @@ const Settings = {
         });
         Storage.set('remindme:backup', backup);
 
-        const moduleList = Object.keys(parsed.data).join(', ');
-        this.showModal({
-          title: 'Import Data',
-          body: `
-            <p>Data berikut akan ditimpa:</p>
-            <p style="font-size:var(--text-caption);color:var(--text-muted);margin:var(--spacing-sm) 0">${this.escHtml(moduleList)}</p>
-            <p>Backup sudah dibuat. Lanjutkan?</p>
-          `,
-          buttons: [
-            { label: 'Batal', class: 'btn-secondary', action: () => { this.hideModal(); fileInput.value = ''; }},
-            { label: 'Import', class: 'btn-primary', action: () => {
-              Object.entries(parsed.data).forEach(([key, val]) => Storage.set(key, val));
-              this.hideModal();
-              location.reload();
-            }},
-          ],
-        });
-      } catch (err) {
-        this.showModal({
-          title: 'Gagal',
-          body: `<p>File tidak valid: ${err.message}</p>`,
-          buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
-        });
+        Object.entries(parsed.data).forEach(([key, val]) => Storage.set(key, val));
         fileInput.value = '';
+        this.showToast('Data berhasil di-import');
+        setTimeout(() => location.reload(), 1200);
+      } catch (err) {
+        fileInput.value = '';
+        this.showToast('Format file tidak valid');
       }
     };
     reader.readAsText(file);
