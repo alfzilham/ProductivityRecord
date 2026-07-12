@@ -283,14 +283,17 @@ const Settings = {
           </div>
           <div class="settings-notif-sub ${n.taskDeadlineEnabled ? '' : 'disabled'}">
             <span class="settings-notif-hint">Tampilkan peringatan</span>
-            <div class="select-wrapper">
-              <select data-key="taskDeadlineHours" ${n.taskDeadlineEnabled ? '' : 'disabled'}>
-                <option value="24" ${n.taskDeadlineHours === 24 ? 'selected' : ''}>24 jam sebelumnya</option>
-                <option value="12" ${n.taskDeadlineHours === 12 ? 'selected' : ''}>12 jam sebelumnya</option>
-                <option value="6" ${n.taskDeadlineHours === 6 ? 'selected' : ''}>6 jam sebelumnya</option>
-                <option value="1" ${n.taskDeadlineHours === 1 ? 'selected' : ''}>1 jam sebelumnya</option>
-              </select>
-              <i data-lucide="chevron-down" class="select-arrow" width="14" height="14"></i>
+            <div class="dropdown-wrapper">
+              <button class="dropdown-trigger" data-key="taskDeadlineHours" ${n.taskDeadlineEnabled ? '' : 'disabled'}>
+                <span class="dropdown-value">${this.getDeadlineLabel(n.taskDeadlineHours)}</span>
+                <i data-lucide="chevron-down" class="dropdown-arrow" width="14" height="14"></i>
+              </button>
+              <div class="dropdown-panel hidden" data-key="taskDeadlineHours">
+                <button class="dropdown-option ${n.taskDeadlineHours === 24 ? 'active' : ''}" data-value="24">24 jam sebelumnya</button>
+                <button class="dropdown-option ${n.taskDeadlineHours === 12 ? 'active' : ''}" data-value="12">12 jam sebelumnya</button>
+                <button class="dropdown-option ${n.taskDeadlineHours === 6 ? 'active' : ''}" data-value="6">6 jam sebelumnya</button>
+                <button class="dropdown-option ${n.taskDeadlineHours === 1 ? 'active' : ''}" data-value="1">1 jam sebelumnya</button>
+              </div>
             </div>
           </div>
         </div>
@@ -519,6 +522,38 @@ const Settings = {
         return;
       }
 
+      // Custom dropdown toggle
+      const dropdownTrigger = e.target.closest('.dropdown-trigger');
+      if (dropdownTrigger) {
+        const panel = dropdownTrigger.parentElement.querySelector('.dropdown-panel');
+        if (panel) {
+          const isOpen = !panel.classList.contains('hidden');
+          document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.add('hidden'));
+          document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('open'));
+          if (!isOpen) {
+            panel.classList.remove('hidden');
+            dropdownTrigger.classList.add('open');
+          }
+        }
+        return;
+      }
+
+      // Custom dropdown option
+      const dropdownOption = e.target.closest('.dropdown-option');
+      if (dropdownOption) {
+        const value = dropdownOption.dataset.value;
+        const panel = dropdownOption.closest('.dropdown-panel');
+        const trigger = panel.parentElement.querySelector('.dropdown-trigger');
+        const valueEl = trigger.querySelector('.dropdown-value');
+        valueEl.textContent = dropdownOption.textContent.trim();
+        trigger.dataset.value = value;
+        panel.querySelectorAll('.dropdown-option').forEach(o => o.classList.remove('active'));
+        dropdownOption.classList.add('active');
+        panel.classList.add('hidden');
+        trigger.classList.remove('open');
+        return;
+      }
+
       if (e.target.classList.contains('settings-notif-cb')) {
         const sub = e.target.closest('.settings-notif-group').querySelector('.settings-notif-sub');
         const inputs = sub.querySelectorAll('select, input, button');
@@ -555,6 +590,12 @@ const Settings = {
       // Modal overlay
       if (e.target.closest('#settings-modal')) {
         // handled by modal's own click listener
+      }
+
+      // Close dropdowns when clicking outside
+      if (!e.target.closest('.dropdown-wrapper')) {
+        document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.add('hidden'));
+        document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('open'));
       }
     });
 
@@ -595,12 +636,18 @@ const Settings = {
     });
   },
 
+  getDeadlineLabel(hours) {
+    const map = { 24: '24 jam sebelumnya', 12: '12 jam sebelumnya', 6: '6 jam sebelumnya', 1: '1 jam sebelumnya' };
+    return map[hours] || '24 jam sebelumnya';
+  },
+
   handleSaveNotification() {
     const n = this.notification;
-    n.taskDeadlineEnabled = document.querySelector('.settings-notif-checkbox[data-key="taskDeadlineEnabled"]')?.checked || false;
-    n.habitReminderEnabled = document.querySelector('.settings-notif-checkbox[data-key="habitReminderEnabled"]')?.checked || false;
-    n.browserNotifEnabled = document.querySelector('.settings-notif-checkbox[data-key="browserNotifEnabled"]')?.checked || false;
-    n.taskDeadlineHours = parseInt(document.querySelector('.settings-notif-select[data-key="taskDeadlineHours"]')?.value) || 24;
+    n.taskDeadlineEnabled = document.querySelector('.settings-notif-cb[data-key="taskDeadlineEnabled"]')?.checked || false;
+    n.habitReminderEnabled = document.querySelector('.settings-notif-cb[data-key="habitReminderEnabled"]')?.checked || false;
+    n.browserNotifEnabled = document.querySelector('.settings-notif-cb[data-key="browserNotifEnabled"]')?.checked || false;
+    const dlTrigger = document.querySelector('.dropdown-trigger[data-key="taskDeadlineHours"]');
+    n.taskDeadlineHours = parseInt(dlTrigger?.dataset.value) || 24;
     n.habitReminderTime = document.querySelector('.settings-notif-time[data-key="habitReminderTime"]')?.value || '20:00';
     const events = [];
     document.querySelectorAll('.settings-notif-event-cb:checked').forEach(cb => events.push(cb.value));
