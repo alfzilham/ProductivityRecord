@@ -158,11 +158,16 @@ const Sidebar = {
   renderExpanded() {
     return `
       <div class="sidebar-inner">
-        <div class="sidebar-logo-section" id="sidebar-logo">
-          <img src="assets/image/logo/logo.png" alt="PR" class="sidebar-logo-img">
-          <div class="sidebar-brand">
-            <span class="sidebar-brand-name">Productivity</span>
-            <span class="sidebar-brand-subtitle">Record</span>
+        <div class="sidebar-logo-section">
+          <div class="sidebar-logo-main" id="sidebar-logo">
+            <img src="assets/image/logo/logo.png" alt="PR" class="sidebar-logo-img">
+            <div class="sidebar-brand">
+              <span class="sidebar-brand-name">Productivity</span>
+              <span class="sidebar-brand-subtitle">Record</span>
+            </div>
+          </div>
+          <div class="sidebar-logo-toggle" id="sidebar-toggle" title="Collapse sidebar">
+            <i data-lucide="chevron-left" width="14" height="14"></i>
           </div>
         </div>
 
@@ -180,10 +185,6 @@ const Sidebar = {
             </a>
           `).join('')}
         </nav>
-
-        <div class="sidebar-toggle" id="sidebar-toggle">
-          <i data-lucide="chevron-left" width="16" height="16"></i>
-        </div>
       </div>
     `;
   },
@@ -191,8 +192,10 @@ const Sidebar = {
   renderCollapsed() {
     return `
       <div class="sidebar-inner">
-        <div class="sidebar-logo-section" id="sidebar-logo">
-          <img src="assets/image/logo/logo.png" alt="PR" class="sidebar-logo-img">
+        <div class="sidebar-logo-section" style="justify-content:center">
+          <div class="sidebar-logo-main" id="sidebar-logo">
+            <img src="assets/image/logo/logo.png" alt="PR" class="sidebar-logo-img">
+          </div>
         </div>
 
         <div class="sidebar-search-wrapper">
@@ -208,10 +211,6 @@ const Sidebar = {
             </a>
           `).join('')}
         </nav>
-
-        <div class="sidebar-toggle" id="sidebar-toggle" title="Expand sidebar">
-          <i data-lucide="chevron-right" width="16" height="16"></i>
-        </div>
       </div>
     `;
   },

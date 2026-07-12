@@ -54,16 +54,26 @@
 .sidebar-logo-section {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: var(--spacing-xs) var(--spacing-sm);
-  cursor: pointer;
   flex-shrink: 0;
   border-radius: var(--radius-md);
   transition: background-color var(--transition-fast);
   min-height: 44px;
+  cursor: default;
 }
 
 .sidebar-logo-section:hover {
   background-color: var(--bg-surface-hover);
+}
+
+.sidebar-logo-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  min-width: 0;
+  flex: 1;
 }
 
 .sidebar-logo-img {
@@ -316,28 +326,33 @@
   display: none;
 }
 
-/* ── Toggle ── */
+/* ── Logo Toggle ── */
 
-.sidebar-toggle {
+.sidebar-logo-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-md);
   color: var(--text-muted);
   cursor: pointer;
   flex-shrink: 0;
-  transition: color var(--transition-fast), background-color var(--transition-fast);
+  opacity: 0;
+  transition: opacity var(--transition-base), color var(--transition-fast), background-color var(--transition-fast);
 }
 
-.sidebar-toggle:hover {
+.sidebar-logo-section:hover .sidebar-logo-toggle {
+  opacity: 1;
+}
+
+.sidebar-logo-toggle:hover {
   color: var(--text-primary);
   background-color: var(--bg-surface-hover);
 }
 
-.is-expanded .sidebar-toggle {
-  justify-content: flex-end;
-  padding-right: var(--spacing-sm);
+.is-expanded .sidebar-logo-toggle {
+  opacity: 0.5;
 }
 
 /* ── Bottom Nav (unchanged) ── */
