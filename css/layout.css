@@ -119,6 +119,15 @@
 .sidebar-search-wrapper {
   position: relative;
   flex-shrink: 0;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#sidebar.is-expanded .sidebar-search-wrapper {
+  display: block;
+  min-height: auto;
 }
 
 .sidebar-search-icon {
@@ -129,6 +138,14 @@
   color: var(--text-muted);
   pointer-events: none;
   transition: left var(--transition-base);
+}
+
+#sidebar:not(.is-expanded) .sidebar-search-icon {
+  position: static;
+  transform: none;
+  left: auto;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .is-expanded .sidebar-search-icon {
@@ -232,7 +249,7 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   flex: 1;
 }
 
