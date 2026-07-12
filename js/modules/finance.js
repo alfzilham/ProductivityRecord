@@ -230,7 +230,7 @@ const Finance = {
         </div>
       </div>
     `;
-    if (typeof AOS !== 'undefined') AOS.refresh();
+    if (typeof AOS !== 'undefined') AOS.refreshHard();
   },
 
   renderForm() {

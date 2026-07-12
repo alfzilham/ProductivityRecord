@@ -228,7 +228,7 @@ const Dashboard = {
       </div>
     `;
 
-    if (typeof AOS !== 'undefined') AOS.refresh();
+    if (typeof AOS !== 'undefined') AOS.refreshHard();
   },
 
   renderFinanceCard(data) {
