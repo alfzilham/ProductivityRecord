@@ -565,7 +565,7 @@ const Settings = {
             <h4 class="danger-card-title">Hapus Data per Modul</h4>
             <p class="danger-card-desc">Pilih modul yang ingin dihapus datanya.</p>
           </div>
-          <div class="danger-card-action" style="justify-content:flex-start">
+          <div class="danger-card-action" style="justify-content:space-between">
             <div class="dropdown-wrapper" style="flex-shrink:0">
               <button class="dropdown-trigger" id="danger-module-trigger" data-key="dangerModule">
                 <span class="dropdown-value" style="color:var(--text-muted)">Pilih modul</span>
