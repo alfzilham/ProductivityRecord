@@ -2170,6 +2170,10 @@
   flex-shrink: 0;
 }
 
+.danger-card-action .dropdown-wrapper {
+  max-width: 220px;
+}
+
 .danger-btn {
   background-color: var(--danger);
   color: #fff;
