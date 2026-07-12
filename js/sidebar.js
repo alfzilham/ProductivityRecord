@@ -9,6 +9,11 @@ const NAV_ITEMS = [
 
 const SIDEBAR_STORAGE_KEY = 'remindme:sidebar';
 
+const USER_PROFILE = {
+  username: 'user',
+  email: 'user@example.com',
+};
+
 const Sidebar = {
   expanded: true,
   currentPage: '',
@@ -185,6 +190,7 @@ const Sidebar = {
             </a>
           `).join('')}
         </nav>
+        ${this.renderUserSection()}
       </div>
     `;
   },
@@ -211,6 +217,20 @@ const Sidebar = {
             </a>
           `).join('')}
         </nav>
+        ${this.renderUserSection()}
+      </div>
+    `;
+  },
+
+  renderUserSection() {
+    const initial = USER_PROFILE.username.charAt(0).toUpperCase();
+    return `
+      <div class="sidebar-user-section">
+        <div class="sidebar-user-avatar">${initial}</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">${this.escHtml(USER_PROFILE.username)}</span>
+          <span class="sidebar-user-email">${this.escHtml(USER_PROFILE.email)}</span>
+        </div>
       </div>
     `;
   },

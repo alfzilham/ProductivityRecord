@@ -310,6 +310,8 @@
 #sidebar:not(.is-expanded) .sidebar-item {
   gap: 0;
   padding: 0;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-item-label {
@@ -379,6 +381,77 @@
 
 .is-expanded .sidebar-logo-toggle {
   opacity: 0.5;
+}
+
+/* ── User Profile ── */
+
+.sidebar-user-section {
+  flex-shrink: 0;
+  padding: var(--spacing-sm);
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+}
+
+#sidebar:not(.is-expanded) .sidebar-user-section {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-sm) 0;
+}
+
+.is-expanded .sidebar-user-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.sidebar-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #3A3A3E;
+  color: #D4D4D8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  flex-shrink: 0;
+}
+
+.is-expanded .sidebar-user-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+}
+
+.sidebar-user-info {
+  display: none;
+}
+
+.is-expanded .sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.sidebar-user-name {
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-email {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Bottom Nav (unchanged) ── */
