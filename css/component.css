@@ -977,6 +977,125 @@
   border-bottom: none;
 }
 
+/* ── Dashboard ── */
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.dash-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-card-wide {
+  grid-column: 1 / -1;
+}
+
+.dash-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.dash-card-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--accent);
+}
+
+.dash-card-module {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dash-card-value {
+  font-size: 28px;
+  font-weight: var(--fw-bold);
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.dash-card-label {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+.dash-card-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.dash-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+}
+
+.dash-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: auto;
+  padding-top: var(--spacing-sm);
+  font-size: var(--text-caption);
+  color: var(--accent-muted);
+  transition: color var(--transition-fast);
+}
+
+.dash-card-link:hover {
+  color: var(--accent);
+}
+
+.dash-journal-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.dash-journal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-primary);
+}
+
+.dash-journal-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.dash-journal-title {
+  font-size: var(--text-body);
+  font-weight: var(--fw-medium);
+}
+
+.dash-journal-date {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 /* ── Habit ── */
 
 .habit-card {

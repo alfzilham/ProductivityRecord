@@ -59,18 +59,19 @@ Daftar task teknis dan known issues untuk ProductivityRecord. Diupdate setiap fa
 ## Fase 5 — Gym & Workout
 
 - [x] Spec struktur data Gym di `SPEC.md`
-- [ ] Log sesi latihan (free + template)
-- [ ] Template management
-- [ ] Riwayat sesi kronologis
-- [ ] Progress chart per latihan
+- [x] Log sesi latihan (free + template)
+- [x] Template management
+- [x] Riwayat sesi kronologis
+- [x] Progress chart per latihan
 
 ## Fase 6 — Dashboard
 
-- [ ] Ringkasan Finance (hari/minggu/bulan berjalan)
-- [ ] Jumlah task selesai/pending
-- [ ] Streak habit aktif
-- [ ] Ringkasan aktivitas Gym terbaru
-- [ ] Entri Journal terbaru
+- [x] Spec Dashboard di `SPEC.md`
+- [x] Ringkasan Finance (hari/minggu/bulan berjalan)
+- [x] Jumlah task selesai/pending
+- [x] Streak habit aktif
+- [x] Ringkasan aktivitas Gym terbaru
+- [x] Entri Journal terbaru
 
 ## Known Issues / Bugs
 
@@ -80,3 +81,7 @@ Daftar task teknis dan known issues untuk ProductivityRecord. Diupdate setiap fa
 
 - [ ] Export/import data (backup manual ke JSON)
 - [ ] Pertimbangan migrasi ke IndexedDB bila `localStorage` mulai penuh
+
+---
+
+✅ **Semua fase (1–6) selesai diimplementasi.**

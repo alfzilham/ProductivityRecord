@@ -376,4 +376,16 @@ User bisa menambah custom moods (label + pilih icon Lucide).
 - Sumbu X: tanggal sesi
 - Sumbu Y: berat maksimum untuk latihan tersebut
 
-### 6.6 Dashboard — _(belum dispesifikasikan, Fase 6)_
+### 6.6 Dashboard
+
+Dashboard tidak memiliki key `localStorage` sendiri. Dashboard adalah **aggregator read-only** yang membaca data dari seluruh modul lain:
+
+| Sumber | Key | Data yang Dibaca |
+|---|---|---|
+| Finance | `remindme:finance` | Ringkasan saldo, pemasukan/pengeluaran hari/minggu/bulan |
+| To-Do | `remindme:todo` | Total task, task selesai, pending, overdue |
+| Habit | `remindme:habit` | Total habit aktif, streak terpanjang |
+| Journal | `remindme:journal` | 3 entri jurnal terbaru |
+| Gym | `remindme:gym` | Sesi latihan terakhir, total sesi bulan ini |
+
+Dashboard menggunakan card grid yang merangkum data dari modul-modul tersebut dalam satu tampilan. Data di-refresh setiap kali halaman di-load (`DOMContentLoaded`).
