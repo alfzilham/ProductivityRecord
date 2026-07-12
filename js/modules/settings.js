@@ -566,9 +566,17 @@ const Settings = {
             <p class="danger-card-desc">Pilih modul yang ingin dihapus datanya.</p>
           </div>
           <div class="danger-card-action">
-            <select id="danger-module-select" class="input-field" style="max-width:180px">
-              ${moduleKeys.map(m => `<option value="${m.key}">${m.label}</option>`).join('')}
-            </select>
+            <div class="dropdown-wrapper" style="flex-shrink:0">
+              <button class="dropdown-trigger" id="danger-module-trigger" data-key="dangerModule">
+                <span class="dropdown-value">Finance</span>
+                <i data-lucide="chevron-down" class="dropdown-arrow" width="14" height="14"></i>
+              </button>
+              <div class="dropdown-panel" data-key="dangerModule">
+                ${moduleKeys.map(m => `
+                  <button class="dropdown-option ${m.key === 'remindme:finance' ? 'active' : ''}" data-value="${m.key}">${m.label}</button>
+                `).join('')}
+              </div>
+            </div>
             <button class="btn btn-sm danger-btn" id="danger-delete-module">Hapus</button>
           </div>
         </div>
@@ -763,15 +771,14 @@ const Settings = {
       }
 
       if (e.target.closest('#danger-delete-module')) {
-        const key = document.getElementById('danger-module-select')?.value;
-        if (key) {
-          const label = document.querySelector(`#danger-module-select option[value="${key}"]`)?.textContent || key;
-          this.handleDangerConfirm('Hapus Data Modul', `Data modul "${label}" akan dihapus permanen. Lanjutkan?`, () => {
-            Storage.remove(key);
-            this.showToast(`Data ${label} berhasil dihapus`);
-            setTimeout(() => location.reload(), 1200);
-          });
-        }
+        const trigger = document.getElementById('danger-module-trigger');
+        const key = trigger?.dataset.value || 'remindme:finance';
+        const label = trigger?.querySelector('.dropdown-value')?.textContent || 'Finance';
+        this.handleDangerConfirm('Hapus Data Modul', `Data modul "${label}" akan dihapus permanen. Lanjutkan?`, () => {
+          Storage.remove(key);
+          this.showToast(`Data ${label} berhasil dihapus`);
+          setTimeout(() => location.reload(), 1200);
+        });
         return;
       }
 
