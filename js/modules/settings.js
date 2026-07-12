@@ -63,8 +63,8 @@ const SETTINGS_TABS = [
   { id: 'notification', label: 'Notification', icon: 'bell' },
   { id: 'privacy', label: 'Privacy', icon: 'shield' },
   { id: 'faq', label: 'FAQ', icon: 'help-circle' },
-  { id: 'danger', label: 'Danger Zone', icon: 'alert-triangle' },
   { id: 'about', label: 'About', icon: 'info' },
+  { id: 'danger', label: 'Danger Zone', icon: 'alert-triangle' },
 ];
 
 const FAQ_DATA = [

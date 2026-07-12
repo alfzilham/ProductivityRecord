@@ -1593,6 +1593,16 @@
   font-weight: var(--fw-medium);
 }
 
+.settings-tab-btn[data-tab="danger"].active {
+  color: var(--danger);
+  border-left-color: var(--danger);
+  background-color: rgba(248, 113, 113, 0.08);
+}
+
+.settings-tab-btn[data-tab="danger"]:hover {
+  color: var(--danger);
+}
+
 .settings-tab-content {
   flex: 1;
   overflow-y: auto;
