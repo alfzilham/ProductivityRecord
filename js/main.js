@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initPage() {
   const page = document.body.dataset.page || 'unknown';
-  const moduleScript = document.getElementById(`module-${page}`);
-  if (moduleScript && typeof window[`${page}Init`] === 'function') {
+  if (typeof window[`${page}Init`] === 'function') {
     window[`${page}Init`]();
   }
 }
