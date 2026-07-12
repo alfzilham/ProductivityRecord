@@ -309,6 +309,7 @@
 
 #sidebar:not(.is-expanded) .sidebar-item {
   gap: 0;
+  padding: 0;
 }
 
 .sidebar-item-label {
