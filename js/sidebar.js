@@ -199,7 +199,7 @@ const Sidebar = {
         </div>
 
         <div class="sidebar-search-wrapper">
-          <i data-lucide="search" class="sidebar-search-icon" width="16" height="16" id="sidebar-search-icon-btn"></i>
+          <i data-lucide="search" class="sidebar-search-icon" width="24" height="24" id="sidebar-search-icon-btn"></i>
           <div id="sidebar-search-overlay"></div>
         </div>
 
