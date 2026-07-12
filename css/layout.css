@@ -417,6 +417,11 @@
   justify-content: center;
 }
 
+#sidebar:not(.is-expanded) .sidebar-user-main:hover .sidebar-user-avatar {
+  background-color: #4A4A4E;
+  transform: scale(1.1);
+}
+
 /* ── Settings button ── */
 
 .sidebar-user-settings {
@@ -453,6 +458,7 @@
   font-size: 14px;
   font-weight: var(--fw-semibold);
   flex-shrink: 0;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .is-expanded .sidebar-user-avatar {
