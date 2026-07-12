@@ -47,6 +47,7 @@ const ALL_MODULES = [
 ];
 
 const Settings = {
+  visible: false,
   profile: null,
   appearance: null,
 
@@ -67,20 +68,84 @@ const Settings = {
     return CURRENCY_OPTIONS.find(c => c.code === code) || CURRENCY_OPTIONS[0];
   },
 
-  /* ── Render ── */
-  init() {
-    this.loadData();
-    this.render();
-    this.bindEvents();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+  toggle() {
+    if (this.visible) this.hide();
+    else this.show();
   },
 
-  render() {
-    const el = document.getElementById('settings-content');
-    if (!el) return;
+  show() {
+    this.loadData();
+    this.visible = true;
+    this.renderOverlay();
+    this.renderPanel();
+    this.bindPanelEvents();
+    document.body.style.overflow = 'hidden';
 
-    el.innerHTML = `
-      <div class="settings-container">
+    requestAnimationFrame(() => {
+      const panel = document.getElementById('settings-panel');
+      const overlay = document.getElementById('settings-overlay');
+      if (panel) panel.classList.add('open');
+      if (overlay) overlay.classList.add('open');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+  },
+
+  hide() {
+    this.visible = false;
+    const panel = document.getElementById('settings-panel');
+    const overlay = document.getElementById('settings-overlay');
+    if (panel) panel.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+
+    setTimeout(() => {
+      const container = document.getElementById('settings-container');
+      if (container) container.remove();
+      const ov = document.getElementById('settings-overlay');
+      if (ov) ov.remove();
+      document.body.style.overflow = '';
+    }, 350);
+  },
+
+  renderOverlay() {
+    const existing = document.getElementById('settings-overlay');
+    if (existing) return;
+
+    const div = document.createElement('div');
+    div.id = 'settings-overlay';
+    div.className = 'settings-overlay';
+    document.body.appendChild(div);
+  },
+
+  renderPanel() {
+    let container = document.getElementById('settings-container');
+    if (container) {
+      container.innerHTML = this.buildPanelContent();
+      return;
+    }
+
+    container = document.createElement('div');
+    container.id = 'settings-container';
+    container.innerHTML = `
+      <aside id="settings-panel" class="settings-panel">
+        <div class="settings-panel-inner">
+          <div class="settings-panel-header">
+            <h2 class="settings-panel-title">Pengaturan</h2>
+            <button id="settings-close-btn" class="settings-close-btn" title="Tutup">
+              <i data-lucide="x" width="20" height="20"></i>
+            </button>
+          </div>
+          <div class="settings-panel-body" id="settings-panel-body">
+            ${this.buildPanelContent()}
+          </div>
+        </div>
+      </aside>
+    `;
+    document.body.appendChild(container);
+  },
+
+  buildPanelContent() {
+    return `
+      <div class="settings-content">
         ${this.renderProfile()}
         ${this.renderAppearance()}
         ${this.renderSidebar()}
@@ -93,22 +158,24 @@ const Settings = {
   renderProfile() {
     const initial = this.profile.username.charAt(0).toUpperCase();
     return `
-      <div class="card settings-section-card" data-aos="fade-up" data-aos-delay="50">
-        <h2 class="settings-section-title">Profil</h2>
+      <div class="settings-section">
+        <h3 class="settings-section-title">Profil</h3>
         <div class="settings-profile-row">
-          <div class="settings-avatar-preview">${initial}</div>
+          <div class="settings-avatar-sm">${initial}</div>
           <div class="settings-profile-fields">
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="settings-username">Username</label>
                 <input type="text" id="settings-username" class="input-field" value="${this.escHtml(this.profile.username)}">
               </div>
+            </div>
+            <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="settings-email">Email</label>
                 <input type="email" id="settings-email" class="input-field" value="${this.escHtml(this.profile.email)}">
               </div>
             </div>
-            <button class="btn btn-primary" id="save-profile-btn">Simpan Profil</button>
+            <button class="btn btn-primary btn-sm" id="save-profile-btn">Simpan</button>
           </div>
         </div>
       </div>
@@ -117,35 +184,31 @@ const Settings = {
 
   renderAppearance() {
     const cur = this.appearance;
-    const currOpt = this.getCurrencyOption(cur.currency);
-
     return `
-      <div class="card settings-section-card" data-aos="fade-up" data-aos-delay="100">
-        <h2 class="settings-section-title">Appearance</h2>
+      <div class="settings-section">
+        <h3 class="settings-section-title">Appearance</h3>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="settings-currency">Mata Uang</label>
             <select id="settings-currency" class="input-field">
               ${CURRENCY_OPTIONS.map(c => `
-                <option value="${c.code}" ${c.code === cur.currency ? 'selected' : ''}>
-                  ${c.label}
-                </option>
+                <option value="${c.code}" ${c.code === cur.currency ? 'selected' : ''}>${c.label}</option>
               `).join('')}
             </select>
           </div>
+        </div>
+        <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="settings-locale">Bahasa / Locale</label>
             <select id="settings-locale" class="input-field">
               ${LOCALE_OPTIONS.map(l => `
-                <option value="${l.code}" ${l.code === cur.locale ? 'selected' : ''}>
-                  ${l.label}
-                </option>
+                <option value="${l.code}" ${l.code === cur.locale ? 'selected' : ''}>${l.label}</option>
               `).join('')}
             </select>
           </div>
         </div>
         <p class="form-hint">Mata uang dan locale digunakan oleh modul Finance.</p>
-        <button class="btn btn-primary" id="save-appearance-btn">Simpan Tampilan</button>
+        <button class="btn btn-primary btn-sm" id="save-appearance-btn">Simpan</button>
       </div>
     `;
   },
@@ -153,16 +216,15 @@ const Settings = {
   renderSidebar() {
     const sidebarState = Storage.get('remindme:sidebar');
     const expanded = sidebarState ? sidebarState.expanded : true;
-
     return `
-      <div class="card settings-section-card" data-aos="fade-up" data-aos-delay="150">
-        <h2 class="settings-section-title">Sidebar</h2>
+      <div class="settings-section">
+        <h3 class="settings-section-title">Sidebar</h3>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Default state saat buka halaman</label>
             <div class="settings-toggle-row">
-              <button class="btn ${expanded ? 'btn-primary' : 'btn-secondary'} sidebar-default-btn" data-state="expanded">Expand</button>
-              <button class="btn ${!expanded ? 'btn-primary' : 'btn-secondary'} sidebar-default-btn" data-state="collapsed">Collapse</button>
+              <button class="btn ${expanded ? 'btn-primary' : 'btn-secondary'} btn-sm sidebar-default-btn" data-state="expanded">Expand</button>
+              <button class="btn ${!expanded ? 'btn-primary' : 'btn-secondary'} btn-sm sidebar-default-btn" data-state="collapsed">Collapse</button>
             </div>
           </div>
         </div>
@@ -172,55 +234,45 @@ const Settings = {
 
   renderData() {
     return `
-      <div class="card settings-section-card" data-aos="fade-up" data-aos-delay="200">
-        <h2 class="settings-section-title">Data</h2>
+      <div class="settings-section">
+        <h3 class="settings-section-title">Data</h3>
 
-        <div class="settings-subsection">
-          <h3 class="settings-subsection-title">Export Data</h3>
-          <p class="form-hint">Pilih modul yang ingin di-export:</p>
-          <div class="settings-checklist">
-            ${ALL_MODULES.map(m => `
-              <label class="settings-checkbox-label">
-                <input type="checkbox" class="settings-export-checkbox" value="${m.key}" checked>
-                <span>${m.label}</span>
-              </label>
-            `).join('')}
-          </div>
-          <button class="btn btn-primary" id="export-btn">
-            <i data-lucide="download" width="16" height="16"></i> Export Selected
-          </button>
+        <h4 class="settings-subsection-title">Export</h4>
+        <p class="form-hint">Pilih modul yang ingin di-export:</p>
+        <div class="settings-checklist">
+          ${ALL_MODULES.map(m => `
+            <label class="settings-checkbox-label">
+              <input type="checkbox" class="settings-export-checkbox" value="${m.key}" checked>
+              <span>${m.label}</span>
+            </label>
+          `).join('')}
         </div>
+        <button class="btn btn-primary btn-sm" id="export-btn">
+          <i data-lucide="download" width="14" height="14"></i> Export Selected
+        </button>
 
-        <div class="settings-divider"></div>
+        <div class="settings-section-divider"></div>
 
-        <div class="settings-subsection">
-          <h3 class="settings-subsection-title">Import Data</h3>
-          <p class="form-hint">Upload file JSON hasil export untuk mengembalikan data.</p>
-          <div style="position:relative">
-            <input type="file" id="import-file-input" accept=".json" style="display:none">
-            <button class="btn btn-secondary" id="import-btn">
-              <i data-lucide="upload" width="16" height="16"></i> Pilih File
-            </button>
-          </div>
-          <p id="import-status" class="form-hint" style="margin-top:var(--spacing-sm)"></p>
-        </div>
+        <h4 class="settings-subsection-title">Import</h4>
+        <p class="form-hint">Upload file JSON hasil export.</p>
+        <input type="file" id="import-file-input" accept=".json" style="display:none">
+        <button class="btn btn-secondary btn-sm" id="import-btn">
+          <i data-lucide="upload" width="14" height="14"></i> Pilih File
+        </button>
+        <p id="import-status" class="form-hint" style="margin-top:var(--spacing-sm)"></p>
       </div>
     `;
   },
 
   renderAbout() {
     return `
-      <div class="card settings-section-card" data-aos="fade-up" data-aos-delay="250">
-        <h2 class="settings-section-title">About</h2>
-        <div class="settings-about-row">
-          <div>
-            <p class="settings-about-version">ProductivityRecord v1.0.0</p>
-            <p class="form-hint">Personal productivity platform — pure frontend</p>
-          </div>
-          <a href="https://github.com/alfzilham/ProductivityRecord" target="_blank" rel="noopener" class="btn btn-secondary">
-            <i data-lucide="github" width="16" height="16"></i> GitHub
-          </a>
-        </div>
+      <div class="settings-section">
+        <h3 class="settings-section-title">About</h3>
+        <p style="font-size:var(--text-body);margin-bottom:var(--spacing-xs)">ProductivityRecord <strong>v1.0.0</strong></p>
+        <p class="form-hint">Personal productivity platform — pure frontend</p>
+        <a href="https://github.com/alfzilham/ProductivityRecord" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="margin-top:var(--spacing-sm)">
+          <i data-lucide="external-link" width="14" height="14"></i> GitHub
+        </a>
       </div>
     `;
   },
@@ -234,77 +286,106 @@ const Settings = {
 
   /* ── Modal ── */
   showModal({ title, body, buttons }) {
-    document.getElementById('modal-title').textContent = title || 'Konfirmasi';
-    document.getElementById('modal-body').innerHTML = body || '';
-    const footer = document.getElementById('modal-footer');
+    let modal = document.getElementById('settings-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'settings-modal';
+      modal.className = 'settings-modal hidden';
+      modal.innerHTML = `
+        <div class="settings-modal-box">
+          <div class="settings-modal-header">
+            <h4 id="settings-modal-title">Konfirmasi</h4>
+          </div>
+          <div class="settings-modal-body" id="settings-modal-body"></div>
+          <div class="settings-modal-footer" id="settings-modal-footer"></div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    document.getElementById('settings-modal-title').textContent = title || 'Konfirmasi';
+    document.getElementById('settings-modal-body').innerHTML = body || '';
+    const footer = document.getElementById('settings-modal-footer');
     footer.innerHTML = '';
     (buttons || [{ label: 'Tutup', class: 'btn-secondary', action: () => this.hideModal() }]).forEach(b => {
       const btn = document.createElement('button');
-      btn.className = `btn ${b.class || 'btn-secondary'}`;
+      btn.className = `btn ${b.class || 'btn-secondary'} btn-sm`;
       btn.textContent = b.label;
       btn.addEventListener('click', b.action);
       footer.appendChild(btn);
     });
-    document.getElementById('modal-overlay').classList.remove('hidden');
+    modal.classList.remove('hidden');
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) this.hideModal();
+    });
   },
 
   hideModal() {
-    document.getElementById('modal-overlay').classList.add('hidden');
+    const modal = document.getElementById('settings-modal');
+    if (modal) modal.classList.add('hidden');
   },
 
   /* ── Events ── */
-  bindEvents() {
-    if (this._bound) return;
-    this._bound = true;
+  _eventsBound: false,
+  panelEventsBound: false,
+
+  bindPanelEvents() {
+    if (this.panelEventsBound && document.getElementById('settings-panel')) return;
+    this.panelEventsBound = true;
 
     document.addEventListener('click', (e) => {
-      // Profile save
-      if (e.target.id === 'save-profile-btn') {
+      if (!this.visible) return;
+
+      if (e.target.closest('#settings-close-btn') || e.target.closest('.settings-close-btn')) {
+        this.hide();
+        return;
+      }
+
+      if (e.target.closest('#save-profile-btn')) {
         this.handleSaveProfile();
         return;
       }
 
-      // Appearance save
-      if (e.target.id === 'save-appearance-btn') {
+      if (e.target.closest('#save-appearance-btn')) {
         this.handleSaveAppearance();
         return;
       }
 
-      // Sidebar default state
       if (e.target.classList.contains('sidebar-default-btn')) {
         document.querySelectorAll('.sidebar-default-btn').forEach(b => {
-          b.className = `btn btn-secondary sidebar-default-btn`;
+          b.className = `btn btn-secondary btn-sm sidebar-default-btn`;
         });
-        e.target.className = `btn btn-primary sidebar-default-btn`;
-        const state = e.target.dataset.state === 'expanded';
-        Storage.set('remindme:sidebar', { expanded: state });
+        e.target.className = `btn btn-primary btn-sm sidebar-default-btn`;
+        Storage.set('remindme:sidebar', { expanded: e.target.dataset.state === 'expanded' });
         return;
       }
 
-      // Export
-      if (e.target.id === 'export-btn' || e.target.closest('#export-btn')) {
+      if (e.target.closest('#export-btn')) {
         this.handleExport();
         return;
       }
 
-      // Import - trigger file input
-      if (e.target.id === 'import-btn' || e.target.closest('#import-btn')) {
+      if (e.target.closest('#import-btn')) {
         document.getElementById('import-file-input').click();
         return;
       }
 
-      // Modal overlay click (close)
-      if (e.target.id === 'modal-overlay') {
-        this.hideModal();
+      // Close when clicking overlay (outside panel)
+      if (e.target.id === 'settings-overlay') {
+        this.hide();
         return;
+      }
+
+      // Modal overlay
+      if (e.target.closest('#settings-modal')) {
+        // handled by modal's own click listener
       }
     });
 
-    // Import file selection
     document.addEventListener('change', (e) => {
       if (e.target.id === 'import-file-input') {
         this.handleImport(e.target);
-        return;
       }
     });
   },
@@ -313,7 +394,6 @@ const Settings = {
     const username = document.getElementById('settings-username').value.trim();
     const email = document.getElementById('settings-email').value.trim();
     if (!username) return;
-
     this.profile.username = username;
     this.profile.email = email;
     this.saveProfile();
@@ -328,13 +408,11 @@ const Settings = {
     const code = document.getElementById('settings-currency').value;
     const locale = document.getElementById('settings-locale').value;
     const opt = this.getCurrencyOption(code);
-
     this.appearance.currency = code;
     this.appearance.currencySymbol = opt.symbol;
     this.appearance.currencyDecimals = opt.decimals;
     this.appearance.locale = locale;
     this.saveAppearance();
-
     this.showModal({
       title: 'Tersimpan',
       body: '<p>Pengaturan tampilan berhasil diperbarui.</p>',
@@ -352,24 +430,17 @@ const Settings = {
       });
       return;
     }
-
     const data = {};
     checked.forEach(cb => {
       const val = Storage.get(cb.value);
       if (val) data[cb.value] = val;
     });
-
-    const exportObj = {
-      exportedAt: new Date().toISOString(),
-      version: '1.0.0',
-      data,
-    };
-
+    const exportObj = { exportedAt: new Date().toISOString(), version: '1.0.0', data };
     const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `productivity-record-export-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `productivity-record-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   },
@@ -377,16 +448,12 @@ const Settings = {
   handleImport(fileInput) {
     const file = fileInput.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const parsed = JSON.parse(e.target.result);
-        if (!parsed.data || typeof parsed.data !== 'object') {
-          throw new Error('Format tidak valid: tidak ada field data');
-        }
+        if (!parsed.data || typeof parsed.data !== 'object') throw new Error('Format tidak valid');
 
-        // Backup dulu
         const backup = {};
         ALL_MODULES.forEach(m => {
           const val = Storage.get(m.key);
@@ -394,24 +461,18 @@ const Settings = {
         });
         Storage.set('remindme:backup', backup);
 
-        // Tampilkan modal konfirmasi
         const moduleList = Object.keys(parsed.data).join(', ');
         this.showModal({
           title: 'Import Data',
           body: `
             <p>Data berikut akan ditimpa:</p>
-            <p style="font-size:var(--text-caption);color:var(--text-muted);margin-top:var(--spacing-sm)">${this.escHtml(moduleList)}</p>
-            <p style="margin-top:var(--spacing-md)">Backup data existing sudah disimpan. Lanjutkan?</p>
+            <p style="font-size:var(--text-caption);color:var(--text-muted);margin:var(--spacing-sm) 0">${this.escHtml(moduleList)}</p>
+            <p>Backup sudah dibuat. Lanjutkan?</p>
           `,
           buttons: [
-            { label: 'Batal', class: 'btn-secondary', action: () => {
-              this.hideModal();
-              fileInput.value = '';
-            }},
-            { label: 'Lanjutkan Import', class: 'btn-primary', action: () => {
-              Object.entries(parsed.data).forEach(([key, val]) => {
-                Storage.set(key, val);
-              });
+            { label: 'Batal', class: 'btn-secondary', action: () => { this.hideModal(); fileInput.value = ''; }},
+            { label: 'Import', class: 'btn-primary', action: () => {
+              Object.entries(parsed.data).forEach(([key, val]) => Storage.set(key, val));
               this.hideModal();
               location.reload();
             }},
@@ -419,7 +480,7 @@ const Settings = {
         });
       } catch (err) {
         this.showModal({
-          title: 'Gagal Import',
+          title: 'Gagal',
           body: `<p>File tidak valid: ${err.message}</p>`,
           buttons: [{ label: 'OK', class: 'btn-primary', action: () => this.hideModal() }],
         });
@@ -428,8 +489,4 @@ const Settings = {
     };
     reader.readAsText(file);
   },
-};
-
-window.settingsInit = function () {
-  Settings.init();
 };

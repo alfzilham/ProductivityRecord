@@ -333,13 +333,13 @@ const Sidebar = {
       }
 
       if (e.target.closest('#sidebar-user-settings') || e.target.closest('.sidebar-user-settings')) {
-        window.location.href = 'settings.html';
+        if (typeof Settings !== 'undefined') Settings.toggle();
         return;
       }
 
       if (e.target.closest('#sidebar-user-avatar')) {
         if (!this.expanded) {
-          window.location.href = 'settings.html';
+          if (typeof Settings !== 'undefined') Settings.toggle();
         }
         return;
       }
